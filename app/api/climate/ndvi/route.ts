@@ -83,10 +83,11 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // 3. Fall back to deterministic model.
+  // 3. Fall back to deterministic model. Use a very short TTL so a future
+  //    request can pick up the live Copernicus data once Sentinel-2 succeeds.
   return NextResponse.json(
     { ...modelled, bounds: bounds ?? null },
-    { headers: { "Cache-Control": "public, max-age=300, s-maxage=300" } },
+    { headers: { "Cache-Control": "public, max-age=10, s-maxage=10" } },
   )
 }
 
