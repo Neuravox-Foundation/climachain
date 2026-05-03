@@ -1,8 +1,6 @@
 "use client"
 
 import { useMemo } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import {
   AlertCircle,
   AlertTriangle,
@@ -50,7 +48,6 @@ export function ClimateAnomalyAlerts({
   const anomalies = useMemo<ClimateAnomaly[]>(() => {
     const out: ClimateAnomaly[] = []
 
-    // Temperature
     if (temperatureData?.analysis) {
       const { temperatureChange, changePerDecade } = temperatureData.analysis
       const tc = Number.isFinite(temperatureChange) ? temperatureChange : 0
@@ -84,14 +81,14 @@ export function ClimateAnomalyAlerts({
           title: `Decadal warming pace of ${tpd.toFixed(2)}°C / decade`,
           description: "Pace of change exceeds the global mean, compressing the adaptation window.",
           impact: "Faster ecosystem shifts and infrastructure stress than long-range planning typically assumes.",
-          recommendation: "Move adaptation milestones forward by one planning cycle and integrate climate stress tests into capital projects.",
+          recommendation:
+            "Move adaptation milestones forward by one planning cycle and integrate climate stress tests into capital projects.",
           trend: tpd > 0 ? "increasing" : "decreasing",
           metric: `${tpd > 0 ? "+" : ""}${tpd.toFixed(2)}°C/decade`,
         })
       }
     }
 
-    // Rainfall
     if (rainfallData?.historical?.data?.length && rainfallData?.projection?.data?.length) {
       const histAvg = mean(rainfallData.historical.data.map((d) => d.rainfall))
       const projAvg = mean(rainfallData.projection.data.map((d) => d.rainfall))
@@ -119,7 +116,6 @@ export function ClimateAnomalyAlerts({
       }
     }
 
-    // CO₂
     if (co2Data?.data && co2Data.data.length >= 10) {
       const recent = co2Data.data.slice(-5)
       const earlier = co2Data.data.slice(0, 5)
@@ -134,8 +130,10 @@ export function ClimateAnomalyAlerts({
             severity: pct > 100 ? "critical" : pct > 60 ? "high" : "medium",
             title: `CO₂ emissions up ${pct.toFixed(0)}% over the record`,
             description: "Recent five-year mean significantly exceeds the earliest five-year baseline.",
-            impact: "Growing carbon liability and rising exposure to border-adjustment mechanisms in trading partners.",
-            recommendation: "Tighten NDC ambition cycle, prioritise grid decarbonisation and review fossil-fuel subsidy footprint.",
+            impact:
+              "Growing carbon liability and rising exposure to border-adjustment mechanisms in trading partners.",
+            recommendation:
+              "Tighten NDC ambition cycle, prioritise grid decarbonisation and review fossil-fuel subsidy footprint.",
             trend: "increasing",
             metric: `${pct.toFixed(0)}% rise`,
           })
@@ -155,7 +153,6 @@ export function ClimateAnomalyAlerts({
       }
     }
 
-    // NDVI
     if (ndviData?.data && ndviData.data.length > 12) {
       const years = Array.from(new Set(ndviData.data.map((d) => d.year))).sort((a, b) => a - b)
       const currentYear = years[years.length - 1]
@@ -206,19 +203,19 @@ export function ClimateAnomalyAlerts({
 
   if (anomalies.length === 0) {
     return (
-      <Card className="border-success/30 bg-success/5">
-        <CardContent className="flex items-center gap-3 pt-5">
-          <span className="flex size-9 items-center justify-center rounded-lg bg-success/15 text-success">
+      <section className="bg-surface-container-low p-8 md:p-10">
+        <div className="flex items-center gap-4">
+          <span className="flex size-9 items-center justify-center rounded-md bg-tertiary-container text-tertiary">
             <Shield className="size-4" />
           </span>
           <div>
-            <p className="text-sm font-medium text-foreground">Climate signals nominal</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="font-display text-base font-semibold text-foreground">Climate signals nominal</p>
+            <p className="mt-0.5 text-sm text-muted-foreground">
               No significant anomalies detected for {countryName} on the loaded series.
             </p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     )
   }
 
@@ -228,32 +225,40 @@ export function ClimateAnomalyAlerts({
   )
 
   return (
-    <Card className="surface-1">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-        <CardTitle className="flex items-center gap-2 text-base font-medium">
-          <AlertTriangle className="size-4 text-warning" />
-          Anomaly alerts
-          <Badge variant="outline" className="rounded-md border-border/70 px-2 py-0.5 text-[10px] font-mono">
-            {anomalies.length}
-          </Badge>
-        </CardTitle>
-        <div className="hidden gap-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground sm:flex">
+    <section>
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="label-tech">Anomalies</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight text-foreground">
+            Signal alerts <span className="font-numeric text-muted-foreground">· {anomalies.length}</span>
+          </h2>
+        </div>
+        <div className="hidden gap-2 sm:flex">
           {(["critical", "high", "medium", "low"] as Severity[]).map((sev) =>
             counts[sev] > 0 ? (
-              <span key={sev} className={cn("inline-flex items-center gap-1 rounded-full border border-border/70 px-2 py-0.5", sevTone(sev))}>
+              <span
+                key={sev}
+                className={cn(
+                  "label-tech-sm inline-flex items-center gap-1.5 rounded-md bg-surface-container-low px-2.5 py-1",
+                  sevTone(sev),
+                )}
+                style={{ color: "currentColor" }}
+              >
                 <span className={cn("size-1.5 rounded-full", sevDot(sev))} />
-                {sev} {counts[sev]}
+                {sev}
+                <span className="font-numeric text-foreground">{counts[sev]}</span>
               </span>
             ) : null,
           )}
         </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
+      </div>
+
+      <div className="space-y-px bg-outline-variant/20">
         {anomalies.map((anomaly) => (
           <AnomalyRow key={anomaly.id} anomaly={anomaly} />
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </section>
   )
 }
 
@@ -270,45 +275,37 @@ function AnomalyRow({ anomaly }: { anomaly: ClimateAnomaly }) {
   const SeverityIcon = anomaly.severity === "low" ? Shield : anomaly.severity === "critical" ? AlertTriangle : AlertCircle
 
   return (
-    <div
-      className={cn(
-        "rounded-xl border p-4 transition",
-        anomaly.severity === "critical" && "border-destructive/40 bg-destructive/5",
-        anomaly.severity === "high" && "border-destructive/30 bg-destructive/[0.04]",
-        anomaly.severity === "medium" && "border-warning/30 bg-warning/[0.04]",
-        anomaly.severity === "low" && "border-success/30 bg-success/[0.04]",
-      )}
-    >
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className={cn("flex size-7 items-center justify-center rounded-md", sevBackground(anomaly.severity))}>
-            <SeverityIcon className="size-3.5" />
+    <article className="bg-surface-container-low p-8">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className={cn("flex size-8 items-center justify-center rounded-md", sevBackground(anomaly.severity))}>
+            <SeverityIcon className="size-4" />
           </span>
           <TypeIcon className={cn("size-4", typeTone(anomaly.type))} />
-          <p className="text-sm font-medium">{anomaly.title}</p>
+          <p className="font-display text-base font-semibold text-foreground">{anomaly.title}</p>
         </div>
-        <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider">
-          <Badge variant="outline" className={cn("rounded-md border-border/60 px-1.5 py-0", sevTone(anomaly.severity))}>
+        <div className="label-tech-sm flex items-center gap-3">
+          <span className={cn(sevTone(anomaly.severity))} style={{ color: "currentColor" }}>
             {anomaly.severity}
-          </Badge>
-          <span className="rounded-md border border-border/60 bg-background/40 px-1.5 py-0.5 text-foreground">
-            {anomaly.metric}
           </span>
+          <span className="font-numeric text-foreground">{anomaly.metric}</span>
           {TrendIcon && <TrendIcon className="size-3 text-muted-foreground" />}
         </div>
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">{anomaly.description}</p>
-      <div className="mt-3 grid gap-2 sm:grid-cols-2">
-        <div className="rounded-lg border border-border/60 bg-background/40 p-2.5 text-xs">
-          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Impact</div>
-          <p className="mt-1 text-foreground/80">{anomaly.impact}</p>
+
+      <p className="mt-3 max-w-3xl text-sm text-muted-foreground">{anomaly.description}</p>
+
+      <div className="mt-6 grid gap-8 sm:grid-cols-2">
+        <div>
+          <p className="label-tech-sm">Impact</p>
+          <p className="mt-1 text-sm text-foreground/85">{anomaly.impact}</p>
         </div>
-        <div className="rounded-lg border border-border/60 bg-background/40 p-2.5 text-xs">
-          <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Recommendation</div>
-          <p className="mt-1 text-foreground/80">{anomaly.recommendation}</p>
+        <div>
+          <p className="label-tech-sm">Recommendation</p>
+          <p className="mt-1 text-sm text-foreground/85">{anomaly.recommendation}</p>
         </div>
       </div>
-    </div>
+    </article>
   )
 }
 
@@ -345,7 +342,6 @@ function sevTone(s: Severity): string {
 function sevDot(s: Severity): string {
   switch (s) {
     case "critical":
-      return "bg-destructive"
     case "high":
       return "bg-destructive"
     case "medium":
@@ -358,13 +354,13 @@ function sevDot(s: Severity): string {
 function sevBackground(s: Severity): string {
   switch (s) {
     case "critical":
-      return "bg-destructive/15 text-destructive"
+      return "bg-error-container text-destructive"
     case "high":
-      return "bg-destructive/10 text-destructive"
+      return "bg-error-container text-destructive"
     case "medium":
       return "bg-warning/15 text-warning"
     case "low":
-      return "bg-success/15 text-success"
+      return "bg-tertiary-container text-tertiary"
   }
 }
 

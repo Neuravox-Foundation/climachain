@@ -1,5 +1,9 @@
-# Local development environment variables for Wrangler
-# Copy to .dev.vars and fill in real values
-# Do NOT commit .dev.vars
+# Local development environment variables for Wrangler.
+# Copy to .dev.vars and fill in real values. Do NOT commit .dev.vars.
+#
+# DEEPSEEK_API_KEY enables the AI brief refinement step. When unset, the
+# /api/ai/insights route still returns a complete, data-grounded brief
+# computed deterministically from the loaded series — it just isn't
+# rewritten by DeepSeek for tone. Get a key at https://platform.deepseek.com.
 
-OPENAI_API_KEY=sk-...
+DEEPSEEK_API_KEY=sk-...

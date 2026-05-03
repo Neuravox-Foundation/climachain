@@ -1,11 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Brain, Loader2, Sparkles, AlertCircle, RefreshCw } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Brain, Loader2, RefreshCw, Sparkles } from "lucide-react"
 
 interface AIInsightsPanelProps {
   countryName: string
@@ -68,81 +65,75 @@ export function AIInsightsPanel({
     }
   }
 
-  const isFallback = insight?.model === "fallback"
-
   return (
-    <Card className="surface-1">
-      <CardHeader className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <CardTitle className="flex items-center gap-2 text-base font-medium">
-            <span className="flex size-7 items-center justify-center rounded-lg bg-accent/10 text-accent">
-              <Brain className="size-4" />
-            </span>
-            AI policy brief
-            <Badge variant="outline" className="rounded-md border-border/70 px-2 py-0.5 text-[10px] font-mono">
-              {LABEL[dataType] ?? dataType}
-            </Badge>
-          </CardTitle>
-          <Button onClick={generate} disabled={loading} size="sm" variant={insight ? "outline" : "default"}>
-            {loading ? (
-              <>
-                <Loader2 className="mr-1.5 size-3.5 animate-spin" />
-                Generating
-              </>
-            ) : insight ? (
-              <>
-                <RefreshCw className="mr-1.5 size-3.5" />
-                Regenerate
-              </>
-            ) : (
-              <>
-                <Sparkles className="mr-1.5 size-3.5" />
-                Generate brief
-              </>
-            )}
-          </Button>
+    <article className="bg-surface-container-low p-8 md:p-10">
+      <header className="flex flex-wrap items-end justify-between gap-6 pb-8">
+        <div className="max-w-md">
+          <p className="label-tech">Brief</p>
+          <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight text-foreground">
+            Policy synthesis · {LABEL[dataType] ?? dataType}
+          </h3>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Computed directly from the loaded series, then refined by DeepSeek when available.
+          </p>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {error && (
-          <Alert className="border-destructive/30 bg-destructive/5 text-destructive">
-            <AlertCircle className="size-4" />
-            <AlertDescription className="text-sm">{error}</AlertDescription>
-          </Alert>
-        )}
+        <Button onClick={generate} disabled={loading} variant={insight ? "outline" : "default"} className="ghost-border">
+          {loading ? (
+            <>
+              <Loader2 className="mr-1.5 size-3.5 animate-spin" />
+              Generating
+            </>
+          ) : insight ? (
+            <>
+              <RefreshCw className="mr-1.5 size-3.5" />
+              Regenerate
+            </>
+          ) : (
+            <>
+              <Sparkles className="mr-1.5 size-3.5" />
+              Generate brief
+            </>
+          )}
+        </Button>
+      </header>
 
-        {insight ? (
-          <div className="space-y-3">
-            {isFallback && (
-              <Alert className="border-warning/30 bg-warning/5">
-                <AlertCircle className="size-4 text-warning" />
-                <AlertDescription className="text-xs">
-                  Using a heuristic baseline. Set <code className="font-mono">OPENAI_API_KEY</code> to enable
-                  on-demand AI synthesis.
-                </AlertDescription>
-              </Alert>
-            )}
-            <div className="rounded-xl border border-border/60 bg-background/40 p-5">
-              <p className="text-sm leading-relaxed text-foreground">{insight.insight}</p>
-              <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
-                <span>{insight.attribution}</span>
-                <span aria-hidden>·</span>
-                <span>{new Date(insight.generatedAt).toLocaleString()}</span>
-              </div>
-            </div>
+      {error && (
+        <div className="bg-error-container/30 px-6 py-4 text-sm text-destructive">
+          <p className="label-tech-sm" style={{ color: "currentColor", opacity: 0.7 }}>
+            Generation error
+          </p>
+          <p className="mt-1">{error}</p>
+        </div>
+      )}
+
+      {insight ? (
+        <div className="bg-surface-container-lowest p-8">
+          <p className="text-base leading-relaxed text-pretty text-foreground">{insight.insight}</p>
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+            <span className="label-tech-sm">{insight.attribution ?? "Synthesised from observed series"}</span>
+            <span aria-hidden>·</span>
+            <span className="font-numeric">
+              {new Date(insight.generatedAt).toLocaleString(undefined, {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
           </div>
-        ) : (
-          <div className="rounded-xl border border-dashed border-border/70 bg-muted/20 p-6 text-center">
-            <Brain className="mx-auto size-6 text-muted-foreground opacity-60" />
-            <p className="mt-2 text-sm text-muted-foreground">
-              Generate a policy-grade brief grounded in the {LABEL[dataType]?.toLowerCase() ?? dataType} series above.
-            </p>
-            <p className="mt-1 text-[11px] text-muted-foreground/70">
-              Output: 110–160 words, sector-specific, suitable for ministries and lenders.
-            </p>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      ) : (
+        <div className="bg-surface-container-lowest p-8 text-center">
+          <Brain className="mx-auto size-6 text-muted-foreground opacity-60" />
+          <p className="mt-3 text-sm text-foreground">
+            Synthesise a {LABEL[dataType]?.toLowerCase() ?? dataType} brief grounded in the actual {countryName} series above.
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Output: 4–5 sentence policy memo with country-specific numbers and recommendations.
+          </p>
+        </div>
+      )}
+    </article>
   )
 }

@@ -2,11 +2,9 @@
 
 import { useMemo } from "react"
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Info, Leaf, Minus, TrendingDown, TrendingUp } from "lucide-react"
+import { Minus, TrendingDown, TrendingUp } from "lucide-react"
 import type { NDVIData } from "@/lib/climate-api"
+import { cn } from "@/lib/utils"
 
 interface NDVIChartProps {
   data: NDVIData[]
@@ -17,7 +15,7 @@ interface NDVIChartProps {
 
 interface VegetationHealth {
   label: string
-  tone: string
+  tone: "success" | "warning" | "destructive" | "muted"
 }
 
 export function NDVIChart({ data, countryName, source, note }: NDVIChartProps) {
@@ -59,7 +57,7 @@ export function NDVIChart({ data, countryName, source, note }: NDVIChartProps) {
     () =>
       (data ?? []).map((d) => ({
         ...d,
-        displayDate: `${d.month} ${String(d.year).slice(-2)}`,
+        displayDate: `${d.month} '${String(d.year).slice(-2)}`,
         ndvi: Number.isFinite(d.ndvi) ? d.ndvi : 0,
       })),
     [data],
@@ -72,131 +70,134 @@ export function NDVIChart({ data, countryName, source, note }: NDVIChartProps) {
     analysis.trend === "up" ? "text-success" : analysis.trend === "down" ? "text-destructive" : "text-muted-foreground"
 
   return (
-    <Card className="surface-1">
-      <CardHeader className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <CardTitle className="flex items-center gap-2 text-base font-medium">
-            <Leaf className="size-4 text-chart-3" />
-            Vegetation index (NDVI) · {countryName}
-          </CardTitle>
-          {source && (
-            <Badge variant="outline" className="rounded-md border-border/70 px-2 py-0.5 text-[10px] font-mono">
-              {truncate(source, 38)}
-            </Badge>
-          )}
+    <article className="bg-surface-container-low p-8 md:p-10">
+      <header className="flex flex-wrap items-end justify-between gap-6 pb-8">
+        <div className="max-w-md">
+          <p className="label-tech">Vegetation</p>
+          <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight text-foreground">
+            {countryName} vegetation index
+          </h3>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Three-year monthly NDVI baseline. 0 = bare soil/water, 1 = dense canopy.
+          </p>
         </div>
-        <div className="grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
-          <Tile label="Mean (current yr)" value={analysis.avgCurrent.toFixed(3)} />
-          <Tile
-            label="YoY change"
-            value={analysis.change != null ? `${analysis.change > 0 ? "+" : ""}${analysis.change.toFixed(1)}%` : "—"}
-            accent={trendTone}
-            icon={<TrendIcon className="size-3.5" />}
-          />
-          <Tile label="Range" value={`${analysis.min.toFixed(2)} – ${analysis.max.toFixed(2)}`} />
-          <Tile label="Health" value={analysis.health.label} accent={analysis.health.tone} />
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="h-72 w-full">
-          <ResponsiveContainer>
-            <AreaChart data={chartData} margin={{ top: 6, right: 18, left: -8, bottom: 28 }}>
-              <defs>
-                <linearGradient id="ndviGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--color-chart-3)" stopOpacity={0.45} />
-                  <stop offset="95%" stopColor="var(--color-chart-3)" stopOpacity={0.02} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" opacity={0.5} />
-              <XAxis
-                dataKey="displayDate"
-                stroke="var(--color-muted-foreground)"
-                tickLine={false}
-                axisLine={false}
-                fontSize={10}
-                interval={2}
-                angle={-30}
-                textAnchor="end"
-              />
-              <YAxis
-                domain={[0, 1]}
-                stroke="var(--color-muted-foreground)"
-                tickLine={false}
-                axisLine={false}
-                fontSize={11}
-                width={40}
-              />
-              <Tooltip content={<NDVITooltip />} cursor={{ stroke: "var(--color-border)", strokeWidth: 1 }} />
-              <Area
-                type="monotone"
-                dataKey="ndvi"
-                stroke="var(--color-chart-3)"
-                fill="url(#ndviGradient)"
-                strokeWidth={2}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="mt-4 grid gap-2 rounded-lg border border-border/60 bg-muted/30 p-3 text-[11px] text-muted-foreground sm:grid-cols-5">
-          <ScaleSwatch color="oklch(0.55 0.22 25)" range="0.0–0.2" label="Bare soil / water" />
-          <ScaleSwatch color="oklch(0.7 0.18 75)" range="0.2–0.3" label="Sparse vegetation" />
-          <ScaleSwatch color="oklch(0.78 0.16 90)" range="0.3–0.5" label="Moderate" />
-          <ScaleSwatch color="oklch(0.6 0.14 155)" range="0.5–0.7" label="Dense" />
-          <ScaleSwatch color="oklch(0.45 0.13 155)" range="0.7–1.0" label="Very dense" />
-        </div>
-
-        {note && (
-          <Alert className="mt-4 border-border/60 bg-background/40">
-            <Info className="size-4" />
-            <AlertDescription className="text-xs">{note}</AlertDescription>
-          </Alert>
+        {source && (
+          <p className="font-numeric text-xs text-muted-foreground">{truncate(source, 48)}</p>
         )}
-      </CardContent>
-    </Card>
+      </header>
+
+      <div className="grid grid-cols-2 gap-px bg-outline-variant/20 sm:grid-cols-4">
+        <Stat label="Mean (current yr)" value={analysis.avgCurrent.toFixed(3)} />
+        <Stat
+          label="YoY change"
+          value={analysis.change != null ? `${analysis.change > 0 ? "+" : ""}${analysis.change.toFixed(1)}%` : "—"}
+          tone={trendTone}
+          icon={<TrendIcon className="size-3.5" />}
+        />
+        <Stat label="Range" value={`${analysis.min.toFixed(2)} – ${analysis.max.toFixed(2)}`} />
+        <Stat label="Health" value={analysis.health.label} tone={healthTone(analysis.health.tone)} />
+      </div>
+
+      <div className="mt-10 h-72 w-full">
+        <ResponsiveContainer>
+          <AreaChart data={chartData} margin={{ top: 6, right: 12, left: -8, bottom: 24 }}>
+            <defs>
+              <linearGradient id="ndviGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--color-chart-3)" stopOpacity={0.35} />
+                <stop offset="95%" stopColor="var(--color-chart-3)" stopOpacity={0.02} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid stroke="var(--color-outline-variant)" strokeDasharray="2 4" opacity={0.4} />
+            <XAxis
+              dataKey="displayDate"
+              stroke="var(--color-on-surface-variant)"
+              tickLine={false}
+              axisLine={false}
+              fontSize={10}
+              tick={{ fontFamily: "var(--font-mono)" }}
+              interval={2}
+              angle={-30}
+              textAnchor="end"
+            />
+            <YAxis
+              domain={[0, 1]}
+              stroke="var(--color-on-surface-variant)"
+              tickLine={false}
+              axisLine={false}
+              fontSize={11}
+              tick={{ fontFamily: "var(--font-mono)" }}
+              width={40}
+            />
+            <Tooltip content={<NDVITooltip />} cursor={{ stroke: "var(--color-outline-variant)" }} />
+            <Area
+              type="monotone"
+              dataKey="ndvi"
+              stroke="var(--color-chart-3)"
+              fill="url(#ndviGradient)"
+              strokeWidth={2}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+
+      {note && (
+        <p className="mt-8 text-xs text-muted-foreground">
+          <span className="label-tech-sm">Note</span>
+          <span className="ml-2">{note}</span>
+        </p>
+      )}
+    </article>
   )
 }
 
 function classifyHealth(value: number): VegetationHealth {
-  if (value > 0.6) return { label: "Excellent", tone: "text-success" }
-  if (value > 0.4) return { label: "Good", tone: "text-success" }
-  if (value > 0.25) return { label: "Fair", tone: "text-warning" }
-  if (value > 0.15) return { label: "Sparse", tone: "text-warning" }
-  return { label: "Poor", tone: "text-destructive" }
+  if (value > 0.6) return { label: "Excellent", tone: "success" }
+  if (value > 0.4) return { label: "Good", tone: "success" }
+  if (value > 0.25) return { label: "Fair", tone: "warning" }
+  if (value > 0.15) return { label: "Sparse", tone: "warning" }
+  return { label: "Poor", tone: "destructive" }
+}
+
+function healthTone(tone: VegetationHealth["tone"]): string {
+  switch (tone) {
+    case "success":
+      return "text-success"
+    case "warning":
+      return "text-warning"
+    case "destructive":
+      return "text-destructive"
+    default:
+      return "text-muted-foreground"
+  }
 }
 
 function truncate(value: string, max: number): string {
   return value.length > max ? value.slice(0, max - 1) + "…" : value
 }
 
-function Tile({
+function Stat({
   label,
   value,
-  accent,
+  tone,
   icon,
 }: {
   label: string
   value: string
-  accent?: string
+  tone?: string
   icon?: React.ReactNode
 }) {
   return (
-    <div className="rounded-lg border border-border/60 bg-background/40 px-3 py-2.5">
-      <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">{label}</div>
-      <div className={`mt-1 flex items-center gap-1.5 font-mono text-base font-semibold tracking-tight ${accent ?? ""}`}>
+    <div className="bg-surface-container-low px-6 py-7">
+      <p className="label-tech-sm">{label}</p>
+      <p
+        className={cn(
+          "mt-2 inline-flex items-center gap-1.5 font-numeric text-2xl font-semibold tracking-tight text-foreground",
+          tone,
+        )}
+      >
         {value}
         {icon}
-      </div>
-    </div>
-  )
-}
-
-function ScaleSwatch({ color, range, label }: { color: string; range: string; label: string }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      <span className="size-2.5 rounded-full" style={{ background: color }} />
-      <span className="font-mono text-[10px]">{range}</span>
-      <span className="truncate">{label}</span>
+      </p>
     </div>
   )
 }
@@ -204,12 +205,14 @@ function ScaleSwatch({ color, range, label }: { color: string; range: string; la
 function NDVITooltip({ active, payload, label }: any) {
   if (!active || !payload || payload.length === 0) return null
   return (
-    <div className="rounded-lg border border-border bg-popover/95 px-3 py-2 shadow-lg backdrop-blur">
-      <p className="text-xs font-medium">{label}</p>
-      <div className="mt-1.5 flex items-center gap-2 text-xs">
+    <div className="ambient-shadow rounded-md bg-surface-bright px-4 py-3 ghost-border-strong">
+      <p className="label-tech-sm">{label}</p>
+      <div className="mt-2 flex items-center gap-3 text-xs">
         <span className="size-1.5 rounded-full bg-chart-3" />
         <span className="text-muted-foreground">NDVI</span>
-        <span className="ml-auto font-mono font-medium">{Number(payload[0].value).toFixed(3)}</span>
+        <span className="ml-auto font-numeric font-medium text-foreground">
+          {Number(payload[0].value).toFixed(3)}
+        </span>
       </div>
     </div>
   )

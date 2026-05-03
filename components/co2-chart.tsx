@@ -1,10 +1,8 @@
 "use client"
 
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Factory, TrendingDown, TrendingUp } from "lucide-react"
 import type { ClimateDataResponse, CO2Data } from "@/lib/climate-api"
+import { cn } from "@/lib/utils"
 
 interface CO2ChartProps {
   data: ClimateDataResponse<CO2Data>
@@ -21,7 +19,6 @@ export function CO2Chart({ data, countryName }: CO2ChartProps) {
   const last = series[series.length - 1]
   const change = last.co2 - first.co2
   const changePct = first.co2 > 0 ? (change / first.co2) * 100 : 0
-  const trendUp = change > 0
 
   const enriched = series.map((point, idx) => {
     const window = series.slice(Math.max(0, idx - 4), idx + 1)
@@ -30,97 +27,100 @@ export function CO2Chart({ data, countryName }: CO2ChartProps) {
   })
 
   return (
-    <Card className="surface-1">
-      <CardHeader className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <CardTitle className="flex items-center gap-2 text-base font-medium">
-            <Factory className="size-4 text-chart-4" />
-            CO₂ emissions
-            {countryName && <span className="text-muted-foreground">· {countryName}</span>}
-          </CardTitle>
-          <Badge variant="outline" className="rounded-md border-border/70 px-2 py-0.5 text-[10px] font-mono">
-            {data.startYear}–{data.endYear}
-          </Badge>
+    <article className="bg-surface-container-low p-8 md:p-10">
+      <header className="flex flex-wrap items-end justify-between gap-6 pb-8">
+        <div className="max-w-md">
+          <p className="label-tech">Emissions</p>
+          <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight text-foreground">
+            {countryName ? `${countryName} CO₂ trajectory` : "CO₂ trajectory"}
+          </h3>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Total annual emissions in kilotons. The line is a five-year moving average.
+          </p>
         </div>
-        <div className="grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
-          <Tile label="Mean" value={`${formatKt(avg)} kt`} />
-          <Tile label="Latest" value={`${formatKt(last.co2)} kt`} />
-          <Tile
-            label="Δ since start"
-            value={`${trendUp ? "+" : ""}${formatKt(change)} kt`}
-            accent={trendUp ? "text-destructive" : "text-success"}
-            iconRight={trendUp ? <TrendingUp className="size-3.5" /> : <TrendingDown className="size-3.5" />}
-          />
-          <Tile
-            label="% change"
-            value={`${trendUp ? "+" : ""}${changePct.toFixed(1)}%`}
-            accent={trendUp ? "text-destructive" : "text-success"}
-          />
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="h-80 w-full">
-          <ResponsiveContainer>
-            <ComposedChart data={enriched} margin={{ top: 6, right: 18, left: -8, bottom: 0 }}>
-              <defs>
-                <linearGradient id="co2BarGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--color-chart-4)" stopOpacity={0.85} />
-                  <stop offset="100%" stopColor="var(--color-chart-4)" stopOpacity={0.25} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid stroke="var(--color-border)" strokeDasharray="3 3" opacity={0.5} />
-              <XAxis
-                dataKey="year"
-                stroke="var(--color-muted-foreground)"
-                tickLine={false}
-                axisLine={false}
-                fontSize={11}
-              />
-              <YAxis
-                stroke="var(--color-muted-foreground)"
-                tickLine={false}
-                axisLine={false}
-                fontSize={11}
-                tickFormatter={(v) => formatKt(v)}
-                width={56}
-              />
-              <Tooltip content={<CO2Tooltip />} cursor={{ fill: "var(--color-muted)", opacity: 0.4 }} />
-              <Bar dataKey="co2" fill="url(#co2BarGradient)" radius={[3, 3, 0, 0]} name="Annual emissions" />
-              <Line
-                type="monotone"
-                dataKey="ma"
-                stroke="var(--color-chart-1)"
-                strokeWidth={2}
-                dot={false}
-                name="5-year moving avg"
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </div>
-        <p className="mt-3 text-xs text-muted-foreground">Source: {data.source}</p>
-      </CardContent>
-    </Card>
+        <p className="font-numeric text-xs text-muted-foreground">
+          {data.startYear}–{data.endYear}
+        </p>
+      </header>
+
+      <div className="grid grid-cols-2 gap-px bg-outline-variant/20 sm:grid-cols-4">
+        <Stat label="Mean" value={`${formatKt(avg)} kt`} />
+        <Stat label="Latest" value={`${formatKt(last.co2)} kt`} />
+        <Stat
+          label="Δ since start"
+          value={`${change > 0 ? "+" : ""}${formatKt(change)} kt`}
+          tone={change > 0 ? "destructive" : "success"}
+        />
+        <Stat
+          label="% change"
+          value={`${change > 0 ? "+" : ""}${changePct.toFixed(1)}%`}
+          tone={change > 0 ? "destructive" : "success"}
+        />
+      </div>
+
+      <div className="mt-10 h-80 w-full">
+        <ResponsiveContainer>
+          <ComposedChart data={enriched} margin={{ top: 6, right: 12, left: -8, bottom: 0 }}>
+            <CartesianGrid stroke="var(--color-outline-variant)" strokeDasharray="2 4" opacity={0.4} />
+            <XAxis
+              dataKey="year"
+              stroke="var(--color-on-surface-variant)"
+              tickLine={false}
+              axisLine={false}
+              fontSize={11}
+              tick={{ fontFamily: "var(--font-mono)" }}
+            />
+            <YAxis
+              stroke="var(--color-on-surface-variant)"
+              tickLine={false}
+              axisLine={false}
+              fontSize={11}
+              tickFormatter={(v) => formatKt(v)}
+              tick={{ fontFamily: "var(--font-mono)" }}
+              width={56}
+            />
+            <Tooltip content={<CO2Tooltip />} cursor={{ fill: "var(--color-surface-container)", opacity: 0.5 }} />
+            <Bar dataKey="co2" fill="var(--color-chart-1)" name="Annual emissions" />
+            <Line
+              type="monotone"
+              dataKey="ma"
+              stroke="var(--color-chart-5)"
+              strokeWidth={2}
+              dot={false}
+              name="5-year moving avg"
+            />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+
+      <p className="mt-8 text-xs text-muted-foreground">
+        <span className="label-tech-sm">Source</span>
+        <span className="ml-2">{data.source}</span>
+      </p>
+    </article>
   )
 }
 
-function Tile({
+function Stat({
   label,
   value,
-  accent,
-  iconRight,
+  tone,
 }: {
   label: string
   value: string
-  accent?: string
-  iconRight?: React.ReactNode
+  tone?: "destructive" | "success"
 }) {
   return (
-    <div className="rounded-lg border border-border/60 bg-background/40 px-3 py-2.5">
-      <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">{label}</div>
-      <div className={`mt-1 flex items-center gap-1.5 font-mono text-base font-semibold tracking-tight ${accent ?? ""}`}>
+    <div className="bg-surface-container-low px-6 py-7">
+      <p className="label-tech-sm">{label}</p>
+      <p
+        className={cn(
+          "mt-2 font-numeric text-2xl font-semibold tracking-tight",
+          tone === "destructive" ? "text-destructive" : tone === "success" ? "text-success" : "text-foreground",
+        )}
+      >
         {value}
-        {iconRight}
-      </div>
+      </p>
     </div>
   )
 }
@@ -135,14 +135,16 @@ function formatKt(value: number): string {
 function CO2Tooltip({ active, payload, label }: any) {
   if (!active || !payload || payload.length === 0) return null
   return (
-    <div className="rounded-lg border border-border bg-popover/95 px-3 py-2 shadow-lg backdrop-blur">
-      <p className="text-xs font-medium text-foreground">Year {label}</p>
-      <div className="mt-1.5 space-y-1">
+    <div className="ambient-shadow rounded-md bg-surface-bright px-4 py-3 ghost-border-strong">
+      <p className="label-tech-sm">Year {label}</p>
+      <div className="mt-2 space-y-1">
         {payload.map((entry: any) => (
-          <div key={entry.dataKey} className="flex items-center gap-2 text-xs">
+          <div key={entry.dataKey} className="flex items-center gap-3 text-xs">
             <span className="size-1.5 rounded-full" style={{ background: entry.color }} />
             <span className="text-muted-foreground">{entry.name}</span>
-            <span className="ml-auto font-mono font-medium">{formatKt(Number(entry.value))} kt</span>
+            <span className="ml-auto font-numeric font-medium text-foreground">
+              {formatKt(Number(entry.value))} kt
+            </span>
           </div>
         ))}
       </div>

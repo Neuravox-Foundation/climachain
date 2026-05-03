@@ -1,10 +1,9 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Search, MapPin, Check, X, Globe2 } from "lucide-react"
+import { Search, Check, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { AFRICAN_COUNTRIES, type AfricanRegion, type Country } from "@/lib/countries"
@@ -50,17 +49,15 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
   const selected = AFRICAN_COUNTRIES.find((c) => c.code === selectedCountry)
 
   const Body = (
-    <div className="flex h-full flex-col gap-4">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <Globe2 className="size-4 text-primary" />
-          <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-            African Nations
-          </h2>
-        </div>
-        <Badge variant="outline" className="rounded-md border-border/70 px-2 py-0.5 font-mono text-[10px]">
-          {AFRICAN_COUNTRIES.length}
-        </Badge>
+    <div className="flex h-full flex-col gap-6">
+      <div>
+        <p className="label-tech">Catalog</p>
+        <h2 className="mt-1 font-display text-lg font-semibold tracking-tight text-foreground">
+          African nations
+        </h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {AFRICAN_COUNTRIES.length} sovereign states · grouped by region
+        </p>
       </div>
 
       <div className="relative">
@@ -68,8 +65,8 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
         <Input
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search country, region or ISO code…"
-          className="h-9 pl-9 text-sm"
+          placeholder="Search country, region or ISO code"
+          className="h-10 bg-surface-container-lowest pl-9 text-sm ghost-border focus-visible:bg-surface-bright"
           aria-label="Search countries"
         />
         {searchTerm && (
@@ -85,20 +82,17 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
       </div>
 
       <ScrollArea className="-mx-2 flex-1 px-2 scrollbar-thin">
-        <div className="space-y-5 pb-4">
+        <div className="space-y-7 pb-6">
           {REGION_ORDER.map((region) => {
             const list = grouped[region]
             if (!list || list.length === 0) return null
             return (
-              <div key={region} className="space-y-1.5">
-                <div className="flex items-center gap-2 px-1">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                    {region}
-                  </span>
-                  <span className="h-px flex-1 bg-border/60" />
-                  <span className="font-mono text-[10px] text-muted-foreground/80">{list.length}</span>
+              <div key={region} className="space-y-2">
+                <div className="flex items-baseline justify-between px-1">
+                  <span className="label-tech-sm">{region}</span>
+                  <span className="font-numeric text-[10px] text-muted-foreground/80">{list.length}</span>
                 </div>
-                <ul className="space-y-0.5">
+                <ul className="space-y-px">
                   {list.map((country) => {
                     const isSelected = selectedCountry === country.code
                     return (
@@ -107,25 +101,24 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
                           type="button"
                           onClick={() => onCountrySelect?.(country)}
                           className={cn(
-                            "group flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-left text-sm transition",
-                            "hover:bg-sidebar-accent",
+                            "group flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors",
                             isSelected
-                              ? "bg-primary/10 text-foreground ring-1 ring-primary/30"
-                              : "text-foreground/85",
+                              ? "bg-secondary-container text-on-secondary-container"
+                              : "text-foreground/90 hover:bg-surface-container",
                           )}
                           aria-pressed={isSelected}
                         >
                           <span className="truncate">{country.name}</span>
-                          <span className="ml-2 flex shrink-0 items-center gap-1.5">
+                          <span className="ml-2 flex shrink-0 items-center gap-2">
                             <span
                               className={cn(
-                                "font-mono text-[10px] uppercase tracking-wider",
-                                isSelected ? "text-primary" : "text-muted-foreground",
+                                "font-numeric text-[10px] uppercase tracking-wider",
+                                isSelected ? "text-on-secondary-container" : "text-muted-foreground",
                               )}
                             >
                               {country.code}
                             </span>
-                            {isSelected && <Check className="size-3.5 text-primary" />}
+                            {isSelected && <Check className="size-3.5" />}
                           </span>
                         </button>
                       </li>
@@ -144,15 +137,14 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
       </ScrollArea>
 
       {selected && (
-        <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
-          <div className="mb-1 flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.18em] text-primary">
-            <MapPin className="size-3" />
+        <div className="rounded-md bg-secondary-container p-4 text-on-secondary-container">
+          <p className="label-tech-sm" style={{ color: "currentColor", opacity: 0.7 }}>
             Active selection
-          </div>
-          <p className="text-sm font-medium">{selected.name}</p>
-          <div className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
+          </p>
+          <p className="mt-1 font-display text-base font-semibold">{selected.name}</p>
+          <div className="mt-1 flex items-center justify-between text-xs opacity-80">
             <span>{selected.region}</span>
-            <span className="font-mono">{selected.code}</span>
+            <span className="font-numeric">{selected.code}</span>
           </div>
         </div>
       )}
@@ -162,9 +154,9 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent side="left" className="w-80 border-r border-border bg-sidebar p-5">
+        <SheetContent side="left" className="w-80 border-r-0 bg-surface-container-low p-6">
           <SheetHeader>
-            <SheetTitle className="text-left">Browse countries</SheetTitle>
+            <SheetTitle className="text-left font-display">Browse countries</SheetTitle>
           </SheetHeader>
           <div className="mt-4 h-[calc(100vh-7rem)]">{Body}</div>
         </SheetContent>
@@ -173,7 +165,7 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
   }
 
   return (
-    <aside className="sticky top-20 hidden h-[calc(100vh-6rem)] w-72 shrink-0 flex-col rounded-xl border border-border/60 bg-sidebar/60 p-4 backdrop-blur-xl md:flex">
+    <aside className="sticky top-24 hidden h-[calc(100vh-8rem)] w-72 shrink-0 flex-col rounded-lg bg-surface-container-low p-6 md:flex">
       {Body}
     </aside>
   )

@@ -18,17 +18,14 @@ export default function HomePage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground">
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 glow-bg" />
-      <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 -z-10 h-[60vh] grid-pattern opacity-40" />
-
+    <div className="min-h-screen bg-background text-foreground">
       <Header
         onMenuClick={() => setSidebarOpen((v) => !v)}
         showMenuButton={isMobile}
         selectedCountry={selectedCountry}
       />
 
-      <div className="mx-auto flex w-full max-w-[1500px] gap-6 px-4 pb-16 md:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-[1480px] gap-10 px-6 pb-24 lg:px-10">
         <Sidebar
           onCountrySelect={handleCountrySelect}
           selectedCountry={selectedCountry?.code}
@@ -38,6 +35,26 @@ export default function HomePage() {
         />
         <MainContent selectedCountry={selectedCountry} onSelectCountry={handleCountrySelect} />
       </div>
+
+      <Footer />
     </div>
+  )
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-outline-variant/30 bg-surface-container-low">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 px-6 py-10 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-10">
+        <div className="flex items-center gap-3">
+          <img src="/icon.png" alt="" width={20} height={20} className="opacity-80" />
+          <span className="font-display text-foreground">ClimaChain</span>
+          <span aria-hidden>·</span>
+          <span>A Neuravox Foundation platform</span>
+        </div>
+        <div className="label-tech-sm flex items-center gap-3">
+          <span>Sources: World Bank · CMIP6 · Copernicus</span>
+        </div>
+      </div>
+    </footer>
   )
 }

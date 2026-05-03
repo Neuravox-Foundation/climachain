@@ -1,7 +1,6 @@
 "use client"
 
-import { CloudRain, Factory, MapPin, Thermometer, TrendingDown, TrendingUp, Minus } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
+import { Minus, TrendingDown, TrendingUp } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { ExtendedClimateData } from "@/hooks/use-climate-data-extended"
 import type { Country } from "@/lib/countries"
@@ -29,94 +28,90 @@ export function CountrySummaryStrip({ country, temperature, rainfall, co2, loadi
   const co2First = co2Series[0]?.co2 ?? null
   const co2Delta = co2Latest && co2First && co2First > 0 ? ((co2Latest - co2First) / co2First) * 100 : null
 
-  return (
-    <section className="overflow-hidden rounded-2xl border border-border/60 bg-card/50 backdrop-blur-xl">
-      <div className="flex flex-col gap-4 border-b border-border/60 p-5 md:flex-row md:items-center md:justify-between md:p-6">
-        <div className="flex items-center gap-3">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <MapPin className="size-5" />
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold tracking-tight">{country.name}</h2>
-            <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
-              <span>{country.region}</span>
-              <span aria-hidden>·</span>
-              <span className="font-mono">ISO {country.code}</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          {loading && (
-            <Badge variant="outline" className="gap-1.5 rounded-full border-border/70 px-2.5 py-0.5 text-xs">
-              <span className="size-1.5 animate-pulse rounded-full bg-primary" />
-              Streaming
-            </Badge>
-          )}
-          <Badge variant="outline" className="rounded-full border-border/70 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider">
-            World Bank · CMIP6
-          </Badge>
-        </div>
-      </div>
+  const coverage =
+    temperature.historical?.startYear && temperature.projection?.endYear
+      ? `${temperature.historical.startYear}–${temperature.projection.endYear}`
+      : null
 
-      <div className="grid grid-cols-1 divide-border/60 sm:grid-cols-2 sm:divide-x lg:grid-cols-4">
-        <Metric
-          icon={Thermometer}
-          tone="text-chart-1"
-          label="Mean temperature"
-          value={tempAvg != null ? `${tempAvg.toFixed(1)}°C` : "—"}
-          delta={
-            tempDelta != null
-              ? { value: `${tempDelta > 0 ? "+" : ""}${tempDelta.toFixed(2)}°C`, trend: tempTrend ?? "stable" }
-              : null
-          }
-        />
-        <Metric
-          icon={CloudRain}
-          tone="text-chart-2"
-          label="Annual rainfall"
-          value={rainfallAvg != null ? `${Math.round(rainfallAvg)} mm` : "—"}
-          delta={null}
-        />
-        <Metric
-          icon={Factory}
-          tone="text-chart-4"
-          label="Latest CO₂"
-          value={co2Latest != null ? `${formatKt(co2Latest)} kt` : "—"}
-          delta={
-            co2Delta != null
-              ? {
-                  value: `${co2Delta > 0 ? "+" : ""}${co2Delta.toFixed(0)}%`,
-                  trend: Math.abs(co2Delta) < 5 ? "stable" : co2Delta > 0 ? "warming" : "cooling",
-                }
-              : null
-          }
-        />
-        <Metric
-          icon={MapPin}
-          tone="text-chart-3"
-          label="Coverage"
-          value={
-            temperature.historical?.startYear && temperature.projection?.endYear
-              ? `${temperature.historical.startYear}–${temperature.projection.endYear}`
-              : "—"
-          }
-          delta={null}
-        />
+  return (
+    <section className="bg-surface-container-low">
+      <div className="grid grid-cols-1 gap-12 px-8 py-10 md:grid-cols-12 md:px-10 md:py-12">
+        <div className="md:col-span-5">
+          <p className="label-tech">Brief</p>
+          <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight text-foreground md:text-[3rem] md:leading-[1.05]">
+            {country.name}
+          </h1>
+          <div className="mt-3 flex items-center gap-3 text-sm text-muted-foreground">
+            <span>{country.region}</span>
+            <span aria-hidden>·</span>
+            <span className="font-numeric uppercase tracking-wider">ISO {country.code}</span>
+            {loading && (
+              <>
+                <span aria-hidden>·</span>
+                <span className="label-tech-sm flex items-center gap-1.5" style={{ color: "currentColor" }}>
+                  <span className="size-1.5 animate-pulse rounded-full bg-secondary" />
+                  streaming
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div className="md:col-span-7">
+          <div className="grid grid-cols-2 gap-px bg-outline-variant/20 lg:grid-cols-4">
+            <Metric
+              label="Mean temp"
+              value={tempAvg != null ? `${tempAvg.toFixed(1)}°` : "—"}
+              suffix="C"
+              delta={
+                tempDelta != null
+                  ? { value: `${tempDelta > 0 ? "+" : ""}${tempDelta.toFixed(2)}°C`, trend: tempTrend ?? "stable" }
+                  : null
+              }
+            />
+            <Metric
+              label="Annual rain"
+              value={rainfallAvg != null ? `${Math.round(rainfallAvg)}` : "—"}
+              suffix="mm"
+              delta={null}
+            />
+            <Metric
+              label="Latest CO₂"
+              value={co2Latest != null ? formatKt(co2Latest) : "—"}
+              suffix="kt"
+              delta={
+                co2Delta != null
+                  ? {
+                      value: `${co2Delta > 0 ? "+" : ""}${co2Delta.toFixed(0)}%`,
+                      trend: Math.abs(co2Delta) < 5 ? "stable" : co2Delta > 0 ? "warming" : "cooling",
+                    }
+                  : null
+              }
+            />
+            <Metric label="Coverage" value={coverage ?? "—"} suffix="" delta={null} mono />
+          </div>
+        </div>
       </div>
     </section>
   )
 }
 
 interface MetricProps {
-  icon: React.ComponentType<{ className?: string }>
-  tone: string
   label: string
   value: string
+  suffix: string
   delta: { value: string; trend: "warming" | "cooling" | "stable" } | null
+  mono?: boolean
 }
 
-function Metric({ icon: Icon, tone, label, value, delta }: MetricProps) {
-  const Trend = delta ? (delta.trend === "warming" ? TrendingUp : delta.trend === "cooling" ? TrendingDown : Minus) : null
+function Metric({ label, value, suffix, delta, mono }: MetricProps) {
+  const Trend = delta
+    ? delta.trend === "warming"
+      ? TrendingUp
+      : delta.trend === "cooling"
+        ? TrendingDown
+        : Minus
+    : null
   const trendTone = delta
     ? delta.trend === "warming"
       ? "text-destructive"
@@ -125,20 +120,18 @@ function Metric({ icon: Icon, tone, label, value, delta }: MetricProps) {
         : "text-muted-foreground"
     : ""
   return (
-    <div className="px-5 py-5 md:px-6 md:py-6">
-      <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
-        <span className="flex items-center gap-1.5">
-          <Icon className={cn("size-3.5", tone)} />
-          {label}
-        </span>
-        {Trend && delta && (
-          <span className={cn("inline-flex items-center gap-1 text-[10px]", trendTone)}>
-            <Trend className="size-3" />
-            {delta.value}
-          </span>
-        )}
-      </div>
-      <p className="mt-2 font-mono text-2xl font-semibold tracking-tight">{value}</p>
+    <div className="bg-surface-container-low px-6 py-7">
+      <p className="label-tech-sm">{label}</p>
+      <p className={cn("mt-2 font-numeric text-3xl font-semibold tracking-tight text-foreground", mono && "text-2xl")}>
+        {value}
+        {suffix && <span className="ml-1 text-base font-normal text-muted-foreground">{suffix}</span>}
+      </p>
+      {delta && Trend && (
+        <p className={cn("mt-2 inline-flex items-center gap-1 font-numeric text-xs", trendTone)}>
+          <Trend className="size-3" />
+          {delta.value}
+        </p>
+      )}
     </div>
   )
 }

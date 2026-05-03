@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter, JetBrains_Mono } from "next/font/google"
+import { Inter, Manrope, Space_Grotesk } from "next/font/google"
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
@@ -12,7 +12,13 @@ const inter = Inter({
   display: "swap",
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+})
+
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
@@ -24,9 +30,10 @@ export const metadata: Metadata = {
     template: "%s · ClimaChain",
   },
   description:
-    "Enterprise-grade climate intelligence for African nations. Temperature, precipitation, CO₂ emissions and vegetation health with AI-assisted policy briefs.",
+    "Institutional-grade climate intelligence for African nations. Temperature, precipitation, CO₂ emissions and vegetation indices, paired with policy briefs grounded in World Bank and CMIP6 data.",
   applicationName: "ClimaChain",
-  authors: [{ name: "Neuravox Foundation" }],
+  authors: [{ name: "Neuravox Foundation", url: "https://github.com/Neuravox-Foundation" }],
+  publisher: "Neuravox Foundation",
   keywords: [
     "climate data",
     "Africa",
@@ -36,24 +43,26 @@ export const metadata: Metadata = {
     "CO2 emissions",
     "climate adaptation",
     "ClimaChain",
+    "Neuravox",
   ],
   metadataBase: new URL("https://climachain.pages.dev"),
   openGraph: {
     title: "ClimaChain — Climate Intelligence for Africa",
-    description:
-      "Real-time climate analytics and AI-generated policy briefs for African nations, built on World Bank, CMIP6 and Copernicus data.",
+    description: "A Neuravox Foundation platform for climate analytics across the African continent.",
     type: "website",
+    siteName: "ClimaChain",
   },
   icons: {
-    icon: [{ url: "/favicon.ico" }, { url: "/favicon.png", type: "image/png" }],
-    apple: "/favicon.png",
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "32x32" }],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: [{ url: "/icon.png" }],
   },
 }
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
-    { media: "(prefers-color-scheme: dark)", color: "#08090b" },
+    { media: "(prefers-color-scheme: light)", color: "#f8f9ff" },
+    { media: "(prefers-color-scheme: dark)", color: "#07101e" },
   ],
 }
 
@@ -64,8 +73,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased ${inter.variable} ${jetbrainsMono.variable}`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+      <body className={`font-sans antialiased ${inter.variable} ${manrope.variable} ${spaceGrotesk.variable}`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Suspense fallback={null}>{children}</Suspense>
           <Toaster richColors position="top-right" />
         </ThemeProvider>

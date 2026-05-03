@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Download, FileSpreadsheet, FileText, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -126,33 +125,33 @@ export function ExportButtons({ countryName, countryCode, dataType, data, insigh
   }
 
   return (
-    <Card className="surface-1">
-      <CardContent className="flex flex-col items-start justify-between gap-4 pt-5 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-2 text-sm">
-          <Download className="size-4 text-muted-foreground" />
-          <span className="font-medium">Export this view</span>
-          <span className="hidden text-muted-foreground sm:inline">— PDF brief or Excel workbook with raw series</span>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button variant="outline" size="sm" onClick={handlePdf} disabled={busy !== null}>
-            {busy === "pdf" ? (
-              <Loader2 className="mr-1.5 size-3.5 animate-spin" />
-            ) : (
-              <FileText className="mr-1.5 size-3.5" />
-            )}
-            PDF report
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleXlsx} disabled={busy !== null}>
-            {busy === "xlsx" ? (
-              <Loader2 className="mr-1.5 size-3.5 animate-spin" />
-            ) : (
-              <FileSpreadsheet className="mr-1.5 size-3.5" />
-            )}
-            Excel
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+    <section className="flex flex-col items-start justify-between gap-4 bg-surface-container-low px-8 py-6 sm:flex-row sm:items-center">
+      <div className="flex items-center gap-3">
+        <Download className="size-4 text-muted-foreground" />
+        <p className="text-sm">
+          <span className="font-medium text-foreground">Export this view</span>
+          <span className="ml-1 text-muted-foreground">— PDF brief or Excel workbook with raw series</span>
+        </p>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button variant="outline" size="sm" onClick={handlePdf} disabled={busy !== null} className="ghost-border">
+          {busy === "pdf" ? (
+            <Loader2 className="mr-1.5 size-3.5 animate-spin" />
+          ) : (
+            <FileText className="mr-1.5 size-3.5" />
+          )}
+          PDF report
+        </Button>
+        <Button variant="outline" size="sm" onClick={handleXlsx} disabled={busy !== null} className="ghost-border">
+          {busy === "xlsx" ? (
+            <Loader2 className="mr-1.5 size-3.5 animate-spin" />
+          ) : (
+            <FileSpreadsheet className="mr-1.5 size-3.5" />
+          )}
+          Excel
+        </Button>
+      </div>
+    </section>
   )
 }
 
