@@ -5,12 +5,12 @@ import { COUNTRY_BBOX, getCountryByCode } from "@/lib/countries"
 import { fetchNDVIFromCopernicus } from "@/lib/copernicus"
 
 const CACHE_TTL_SECONDS = 60 * 60 * 24 * 7 // 7 days
-const CACHE_VERSION = "v1"
-const INFLIGHT_LOCK_TTL = 60 * 5 // 5 minutes
+const CACHE_VERSION = "v2" // bump to invalidate old shape after schema changes
 
 interface CachedNDVI {
   data: NDVIData[]
   fetchedAt: string
+  clipped?: boolean
 }
 
 export async function GET(request: NextRequest) {
@@ -40,82 +40,77 @@ export async function GET(request: NextRequest) {
   const credentialsConfigured = Boolean(env.CDSE_CLIENT_ID && env.CDSE_CLIENT_SECRET)
   const kv = env.NDVI_KV as KVNamespace | undefined
   const cacheKey = `ndvi:${CACHE_VERSION}:${country}`
-  const lockKey = `lock:${CACHE_VERSION}:${country}`
 
   // 1. Try cache first.
   if (kv && bounds) {
     try {
       const cached = await kv.get<CachedNDVI>(cacheKey, "json")
       if (cached && Array.isArray(cached.data) && cached.data.length > 0) {
-        return NextResponse.json(
-          {
-            ...modelled,
-            data: cached.data,
-            source: "Copernicus Sentinel-2 L2A (NDVI, monthly mean)",
-            quality: "live" as const,
-            note: undefined,
-            bounds,
-            lastUpdated: cached.fetchedAt,
-          } satisfies NDVIResponse,
-          { headers: { "Cache-Control": "public, max-age=3600, s-maxage=86400" } },
-        )
+        return liveResponse(modelled, cached.data, bounds, cached.fetchedAt, cached.clipped)
       }
     } catch (err) {
       console.error("NDVI KV read failed:", err)
     }
   }
 
-  // 2. Cache miss. If credentials + bounds + ctx.waitUntil are available,
-  //    kick off the Copernicus fetch in the background and return modelled
-  //    data immediately. Subsequent requests will get live data from KV.
-  if (credentialsConfigured && bounds && kv && ctx?.waitUntil) {
-    ctx.waitUntil(populateCache(env, kv, country, cacheKey, lockKey, bounds))
+  // 2. Cache miss. If credentials + bounds available, fetch synchronously
+  //    with a tight budget. Months are scaled to the country's bbox area so
+  //    the Statistics call fits inside the 30s incoming-request wall clock.
+  if (credentialsConfigured && bounds) {
+    const area = (bounds.maxLon - bounds.minLon) * (bounds.maxLat - bounds.minLat)
+    const months = area > 200 ? 3 : area > 100 ? 4 : area > 50 ? 6 : area > 20 ? 9 : 12
+    try {
+      const { data: series, clipped } = await fetchNDVIFromCopernicus(
+        env.CDSE_CLIENT_ID,
+        env.CDSE_CLIENT_SECRET,
+        bounds,
+        months,
+      )
+      if (series.length > 0) {
+        const fetchedAt = new Date().toISOString()
+        if (kv) {
+          const payload: CachedNDVI = { data: series, fetchedAt, clipped }
+          const writePromise = kv
+            .put(cacheKey, JSON.stringify(payload), { expirationTtl: CACHE_TTL_SECONDS })
+            .catch((e) => console.error("NDVI KV write failed:", e))
+          if (ctx?.waitUntil) ctx.waitUntil(writePromise)
+          else await writePromise
+        }
+        return liveResponse(modelled, series, bounds, fetchedAt, clipped)
+      }
+    } catch (err) {
+      console.error(`Copernicus NDVI fetch failed for ${country}:`, err)
+    }
   }
 
-  // 3. Return deterministic model.
+  // 3. Fall back to deterministic model.
   return NextResponse.json(
-    {
-      ...modelled,
-      bounds: bounds ?? null,
-      note: credentialsConfigured && bounds
-        ? "Live Sentinel-2 NDVI is being fetched in the background; refresh in ~30 seconds."
-        : modelled.note,
-    },
-    { headers: { "Cache-Control": "public, max-age=60, s-maxage=60" } },
+    { ...modelled, bounds: bounds ?? null },
+    { headers: { "Cache-Control": "public, max-age=300, s-maxage=300" } },
   )
 }
 
-/**
- * Populate KV with a fresh Copernicus fetch. Uses a short-lived lock key to
- * avoid concurrent Workers all firing the same heavy Statistics call when a
- * cache entry first expires.
- */
-async function populateCache(
-  env: any,
-  kv: KVNamespace,
-  country: string,
-  cacheKey: string,
-  lockKey: string,
+function liveResponse(
+  modelled: NDVIResponse,
+  data: NDVIData[],
   bounds: { minLon: number; minLat: number; maxLon: number; maxLat: number },
-): Promise<void> {
-  try {
-    const lockHolder = await kv.get(lockKey)
-    if (lockHolder) return
-    await kv.put(lockKey, "1", { expirationTtl: INFLIGHT_LOCK_TTL })
-  } catch (err) {
-    console.error(`NDVI lock acquire failed for ${country}:`, err)
-    return
-  }
-
-  try {
-    const series = await fetchNDVIFromCopernicus(env.CDSE_CLIENT_ID, env.CDSE_CLIENT_SECRET, bounds)
-    if (series.length === 0) return
-    const payload: CachedNDVI = { data: series, fetchedAt: new Date().toISOString() }
-    await kv.put(cacheKey, JSON.stringify(payload), { expirationTtl: CACHE_TTL_SECONDS })
-    console.log(`NDVI cache populated for ${country}: ${series.length} points`)
-  } catch (err) {
-    console.error(`Copernicus NDVI fetch failed for ${country}:`, err)
-  } finally {
-    await kv.delete(lockKey).catch(() => {})
-  }
+  fetchedAt: string,
+  clipped?: boolean,
+): NextResponse {
+  return NextResponse.json(
+    {
+      ...modelled,
+      data,
+      source: clipped
+        ? "Copernicus Sentinel-2 L2A (NDVI, monthly mean over central 6 deg sample)"
+        : "Copernicus Sentinel-2 L2A (NDVI, monthly mean)",
+      quality: "live" as const,
+      note: clipped
+        ? "Mean computed over a centered 6 deg sub-sample to fit within the request budget; representative of the country's central biome."
+        : undefined,
+      bounds,
+      lastUpdated: fetchedAt,
+    } satisfies NDVIResponse,
+    { headers: { "Cache-Control": "public, max-age=3600, s-maxage=86400" } },
+  )
 }

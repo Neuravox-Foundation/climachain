@@ -86,15 +86,36 @@ export async function fetchNDVIFromCopernicus(
   clientId: string,
   clientSecret: string,
   bbox: BBox,
-  months = 36,
-): Promise<NDVIData[]> {
+  months = 12,
+): Promise<{ data: NDVIData[]; clipped: boolean }> {
   const token = await getCopernicusToken(clientId, clientSecret)
 
   const now = new Date()
   const to = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0))
   const from = new Date(Date.UTC(to.getUTCFullYear(), to.getUTCMonth() - months + 1, 1))
 
-  const polygon = bboxPolygon(bbox)
+  // Clip very large country bboxes to a centered 6 deg square so the
+  // Statistics call always finishes inside Cloudflare's 30s wall clock
+  // for incoming requests. The mean is computed over this representative
+  // central region rather than the full country area; the route discloses
+  // this in its source/note when clipping is in effect.
+  const MAX_AXIS_DEG = 6
+  const width = bbox.maxLon - bbox.minLon
+  const height = bbox.maxLat - bbox.minLat
+  const clipped = width > MAX_AXIS_DEG || height > MAX_AXIS_DEG
+  const cx = (bbox.minLon + bbox.maxLon) / 2
+  const cy = (bbox.minLat + bbox.maxLat) / 2
+  const half = MAX_AXIS_DEG / 2
+  const fetchBox: BBox = clipped
+    ? {
+        minLon: width > MAX_AXIS_DEG ? cx - half : bbox.minLon,
+        maxLon: width > MAX_AXIS_DEG ? cx + half : bbox.maxLon,
+        minLat: height > MAX_AXIS_DEG ? cy - half : bbox.minLat,
+        maxLat: height > MAX_AXIS_DEG ? cy + half : bbox.maxLat,
+      }
+    : bbox
+
+  const polygon = bboxPolygon(fetchBox)
   const payload = {
     input: {
       bounds: {
@@ -104,7 +125,7 @@ export async function fetchNDVIFromCopernicus(
       data: [
         {
           type: "sentinel-2-l2a",
-          dataFilter: { mosaickingOrder: "leastCC", maxCloudCoverage: 60 },
+          dataFilter: { mosaickingOrder: "leastCC", maxCloudCoverage: 40 },
         },
       ],
     },
@@ -115,11 +136,12 @@ export async function fetchNDVIFromCopernicus(
       },
       aggregationInterval: { of: "P1M" },
       evalscript: NDVI_EVALSCRIPT,
-      // 0.05 degrees ~= 5 km. Coarse enough for a national-mean NDVI but 25x
-      // fewer cells than 1 km, which keeps the Statistics call inside the
-      // Worker's subrequest budget for country-scale polygons.
-      resx: 0.05,
-      resy: 0.05,
+      // Sentinel-2 L2A caps at 1500 m/pixel. 0.013 degrees is ~1448 m at the
+      // equator and ~1280 m at 30 degrees latitude, so we sit just under the
+      // limit everywhere on the continent while keeping the processing-units
+      // cost manageable for country-scale polygons.
+      resx: 0.013,
+      resy: 0.013,
     },
     calculations: {
       default: {},
@@ -134,7 +156,7 @@ export async function fetchNDVIFromCopernicus(
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(payload),
-    signal: AbortSignal.timeout(90_000),
+    signal: AbortSignal.timeout(28_000),
   })
   if (!res.ok) {
     const detail = await res.text().catch(() => "")
@@ -157,7 +179,7 @@ export async function fetchNDVIFromCopernicus(
     })
   }
   points.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0))
-  return points
+  return { data: points, clipped }
 }
 
 function bboxPolygon(b: BBox) {
