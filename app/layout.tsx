@@ -45,12 +45,13 @@ export const metadata: Metadata = {
     "ClimaChain",
     "Neuravox",
   ],
-  metadataBase: new URL("https://climachain.pages.dev"),
+  metadataBase: new URL("https://climachain.online"),
   openGraph: {
     title: "ClimaChain — Climate Intelligence for Africa",
     description: "A Neuravox Foundation platform for climate analytics across the African continent.",
     type: "website",
     siteName: "ClimaChain",
+    url: "https://climachain.online",
   },
   icons: {
     icon: [{ url: "/icon.png", type: "image/png", sizes: "32x32" }],
