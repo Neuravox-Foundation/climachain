@@ -115,10 +115,11 @@ export async function fetchNDVIFromCopernicus(
       },
       aggregationInterval: { of: "P1M" },
       evalscript: NDVI_EVALSCRIPT,
-      // Resolution is independent of the API call; resx/resy at ~1km keeps
-      // payloads small for country-scale aggregations.
-      resx: 0.01,
-      resy: 0.01,
+      // 0.05 degrees ~= 5 km. Coarse enough for a national-mean NDVI but 25x
+      // fewer cells than 1 km, which keeps the Statistics call inside the
+      // Worker's subrequest budget for country-scale polygons.
+      resx: 0.05,
+      resy: 0.05,
     },
     calculations: {
       default: {},
@@ -133,7 +134,7 @@ export async function fetchNDVIFromCopernicus(
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(payload),
-    signal: AbortSignal.timeout(30_000),
+    signal: AbortSignal.timeout(90_000),
   })
   if (!res.ok) {
     const detail = await res.text().catch(() => "")
