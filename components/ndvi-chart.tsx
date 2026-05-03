@@ -90,11 +90,11 @@ export function NDVIChart({ data, countryName, source, note }: NDVIChartProps) {
         <Stat label="Mean (current yr)" value={analysis.avgCurrent.toFixed(3)} />
         <Stat
           label="YoY change"
-          value={analysis.change != null ? `${analysis.change > 0 ? "+" : ""}${analysis.change.toFixed(1)}%` : "—"}
+          value={analysis.change != null ? `${analysis.change > 0 ? "+" : ""}${analysis.change.toFixed(1)}%` : "-"}
           tone={trendTone}
           icon={<TrendIcon className="size-3.5" />}
         />
-        <Stat label="Range" value={`${analysis.min.toFixed(2)} – ${analysis.max.toFixed(2)}`} />
+        <Stat label="Range" value={`${analysis.min.toFixed(2)} - ${analysis.max.toFixed(2)}`} />
         <Stat label="Health" value={analysis.health.label} tone={healthTone(analysis.health.tone)} />
       </div>
 

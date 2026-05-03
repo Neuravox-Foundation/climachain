@@ -1,6 +1,6 @@
 # ClimaChain
 
-Climate intelligence dashboard for African nations — temperature, precipitation,
+Climate intelligence dashboard for African nations - temperature, precipitation,
 CO₂ emissions and vegetation (NDVI) signals paired with policy briefs that are
 **computed deterministically from the loaded data**, then optionally refined by
 DeepSeek for tone.
@@ -10,7 +10,7 @@ A [Neuravox Foundation](https://github.com/Neuravox-Foundation) platform.
 ## Stack
 
 - **Framework**: Next.js 15 (App Router)
-- **Hosting**: Cloudflare Workers via [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare) — single-Worker bundle with `nodejs_compat`
+- **Hosting**: Cloudflare Workers via [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare) - single-Worker bundle with `nodejs_compat`
 - **UI**: Tailwind v4, Radix primitives, shadcn-style components
 - **Typography**: Manrope (display) · Inter (body) · Space Grotesk (numeric)
 - **Charts**: Recharts
@@ -29,7 +29,7 @@ npm run dev
 
 Visit <http://localhost:3000>.
 
-The AI briefs work **without a key** — the route synthesises a 4–5 sentence
+The AI briefs work **without a key** - the route synthesises a 4-5 sentence
 data-grounded policy memo from the loaded series. Adding a `DEEPSEEK_API_KEY`
 only enables a DeepSeek pass to tighten the prose. Get a key at
 <https://platform.deepseek.com>.
@@ -86,7 +86,7 @@ lib/
 The World Bank does not currently expose annual surface-temperature observations
 through its public REST API. ClimaChain reconstructs an internally consistent
 temperature record by anchoring each country to its long-term mean (CCKP normal,
-1991–2020) and modulating with anchor years from the agricultural-land
+1991-2020) and modulating with anchor years from the agricultural-land
 indicator. Every series carries a `quality` field (`live` | `estimated` |
 `unavailable`) and a human-readable `source` so downstream consumers can
 attribute correctly.

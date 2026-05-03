@@ -18,14 +18,14 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header
         onMenuClick={() => setSidebarOpen((v) => !v)}
         showMenuButton={isMobile}
         selectedCountry={selectedCountry}
       />
 
-      <div className="mx-auto flex w-full max-w-[1480px] gap-10 px-6 pb-24 lg:px-10">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-1 gap-10 px-6 pb-24 lg:px-10">
         <Sidebar
           onCountrySelect={handleCountrySelect}
           selectedCountry={selectedCountry?.code}
@@ -43,7 +43,7 @@ export default function HomePage() {
 
 function Footer() {
   return (
-    <footer className="border-t border-outline-variant/30 bg-surface-container-low">
+    <footer className="bg-surface-container-low">
       <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-3 px-6 py-10 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between lg:px-10">
         <div className="flex items-center gap-3">
           <img src="/icon.png" alt="" width={20} height={20} className="opacity-80" />
@@ -52,7 +52,7 @@ function Footer() {
           <span>A Neuravox Foundation platform</span>
         </div>
         <div className="label-tech-sm flex items-center gap-3">
-          <span>Sources: World Bank · CMIP6 · Copernicus</span>
+          <span>Sources: World Bank, CMIP6, Copernicus</span>
         </div>
       </div>
     </footer>

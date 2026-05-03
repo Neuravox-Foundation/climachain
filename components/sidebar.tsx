@@ -3,8 +3,6 @@
 import { useMemo, useState } from "react"
 import { Search, Check, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { AFRICAN_COUNTRIES, type AfricanRegion, type Country } from "@/lib/countries"
 import { cn } from "@/lib/utils"
@@ -49,31 +47,31 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
   const selected = AFRICAN_COUNTRIES.find((c) => c.code === selectedCountry)
 
   const Body = (
-    <div className="flex h-full flex-col gap-6">
+    <div className="flex h-full min-h-0 flex-col gap-7">
       <div>
         <p className="label-tech">Catalog</p>
-        <h2 className="mt-1 font-display text-lg font-semibold tracking-tight text-foreground">
+        <h2 className="mt-2 font-display text-xl font-semibold tracking-tight text-foreground">
           African nations
         </h2>
-        <p className="mt-1 text-xs text-muted-foreground">
-          {AFRICAN_COUNTRIES.length} sovereign states · grouped by region
+        <p className="mt-1.5 text-xs text-muted-foreground">
+          {AFRICAN_COUNTRIES.length} sovereign states, by region
         </p>
       </div>
 
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search country, region or ISO code"
-          className="h-10 bg-surface-container-lowest pl-9 text-sm ghost-border focus-visible:bg-surface-bright"
+          placeholder="Search countries"
+          className="h-11 bg-surface-container-lowest pl-9 pr-9 text-sm ghost-border focus-visible:bg-surface-bright"
           aria-label="Search countries"
         />
         {searchTerm && (
           <button
             type="button"
             onClick={() => setSearchTerm("")}
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
             aria-label="Clear search"
           >
             <X className="size-3.5" />
@@ -81,18 +79,18 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
         )}
       </div>
 
-      <ScrollArea className="-mx-2 flex-1 px-2 scrollbar-thin">
-        <div className="space-y-7 pb-6">
+      <div className="-mx-4 min-h-0 flex-1 overflow-y-auto px-4 scrollbar-thin">
+        <div className="space-y-8 pb-4">
           {REGION_ORDER.map((region) => {
             const list = grouped[region]
             if (!list || list.length === 0) return null
             return (
-              <div key={region} className="space-y-2">
+              <div key={region} className="space-y-2.5">
                 <div className="flex items-baseline justify-between px-1">
                   <span className="label-tech-sm">{region}</span>
                   <span className="font-numeric text-[10px] text-muted-foreground/80">{list.length}</span>
                 </div>
-                <ul className="space-y-px">
+                <ul className="space-y-1">
                   {list.map((country) => {
                     const isSelected = selectedCountry === country.code
                     return (
@@ -101,18 +99,18 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
                           type="button"
                           onClick={() => onCountrySelect?.(country)}
                           className={cn(
-                            "group flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors",
+                            "group flex w-full items-center justify-between gap-3 rounded-md px-3 py-2.5 text-left text-sm transition-colors",
                             isSelected
                               ? "bg-secondary-container text-on-secondary-container"
                               : "text-foreground/90 hover:bg-surface-container",
                           )}
                           aria-pressed={isSelected}
                         >
-                          <span className="truncate">{country.name}</span>
-                          <span className="ml-2 flex shrink-0 items-center gap-2">
+                          <span className="min-w-0 flex-1 truncate">{country.name}</span>
+                          <span className="flex shrink-0 items-center gap-1.5">
                             <span
                               className={cn(
-                                "font-numeric text-[10px] uppercase tracking-wider",
+                                "font-numeric text-[11px] uppercase tracking-wider",
                                 isSelected ? "text-on-secondary-container" : "text-muted-foreground",
                               )}
                             >
@@ -130,11 +128,11 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
           })}
           {filtered.length === 0 && (
             <div className="py-12 text-center text-sm text-muted-foreground">
-              No countries match “{searchTerm}”.
+              No countries match &ldquo;{searchTerm}&rdquo;.
             </div>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
       {selected && (
         <div className="rounded-md bg-secondary-container p-4 text-on-secondary-container">
@@ -154,7 +152,7 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent side="left" className="w-80 border-r-0 bg-surface-container-low p-6">
+        <SheetContent side="left" className="w-[20rem] border-r-0 bg-surface-container-low p-7">
           <SheetHeader>
             <SheetTitle className="text-left font-display">Browse countries</SheetTitle>
           </SheetHeader>
@@ -165,7 +163,7 @@ export function Sidebar({ onCountrySelect, selectedCountry, isOpen, onClose, isM
   }
 
   return (
-    <aside className="sticky top-24 hidden h-[calc(100vh-8rem)] w-72 shrink-0 flex-col rounded-lg bg-surface-container-low p-6 md:flex">
+    <aside className="sticky top-24 hidden h-[calc(100vh-14rem)] w-[20rem] shrink-0 flex-col self-start rounded-lg bg-surface-container-low p-7 md:flex">
       {Body}
     </aside>
   )

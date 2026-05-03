@@ -1,6 +1,6 @@
 "use client"
 
-import { Menu, Github } from "lucide-react"
+import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import type { Country } from "@/lib/countries"
@@ -23,11 +23,11 @@ export function Header({ onMenuClick, showMenuButton, selectedCountry }: HeaderP
 
         <a href="/" className="group flex items-center gap-3">
           <img
-            src="/neuravox-logo.png"
-            alt="Neuravox"
+            src="/climachain-logo.png"
+            alt="ClimaChain"
             width={44}
             height={44}
-            className="size-11 shrink-0 rounded-md object-contain"
+            className="size-11 shrink-0 object-contain"
           />
           <div className="flex flex-col leading-tight">
             <span className="font-display text-base font-semibold tracking-tight text-foreground">ClimaChain</span>
@@ -44,16 +44,6 @@ export function Header({ onMenuClick, showMenuButton, selectedCountry }: HeaderP
             </div>
           )}
 
-          <a
-            href="https://github.com/Neuravox-Foundation/climachain"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="hidden md:inline-flex"
-          >
-            <Button variant="ghost" size="icon" aria-label="GitHub repository">
-              <Github className="size-4" />
-            </Button>
-          </a>
           <ThemeToggle />
         </div>
       </div>

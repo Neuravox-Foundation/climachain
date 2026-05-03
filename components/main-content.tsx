@@ -1,8 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
-import { ArrowRight, ArrowUpRight, CloudRain, Database, Factory, Leaf, Thermometer } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ArrowRight, CloudRain, Factory, Leaf, Thermometer } from "lucide-react"
 import { useExtendedClimateData } from "@/hooks/use-climate-data-extended"
 import { ClimateTabs } from "@/components/climate-tabs"
 import { ClimateAnomalyAlerts } from "@/components/climate-anomaly-alerts"
@@ -52,7 +51,7 @@ export function MainContent({ selectedCountry, onSelectCountry }: MainContentPro
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
               ClimaChain organises temperature, precipitation, emissions and vegetation data for all 54
-              sovereign African states — paired with policy briefs designed for ministries, lenders and
+              sovereign African states - paired with policy briefs designed for ministries, lenders and
               adaptation programmes.
             </p>
 
@@ -78,7 +77,7 @@ export function MainContent({ selectedCountry, onSelectCountry }: MainContentPro
                 {AFRICAN_COUNTRIES.length}
                 <span className="ml-2 text-base font-normal text-muted-foreground">nations</span>
               </p>
-              <p className="mt-1 font-numeric text-sm text-muted-foreground">1960 — 2050</p>
+              <p className="mt-1 font-numeric text-sm text-muted-foreground">1960 - 2050</p>
 
               <div className="mt-8 space-y-5">
                 <CorpusLine label="Temperature" detail="Annual mean, World Bank + CMIP6" />
@@ -153,27 +152,13 @@ export function MainContent({ selectedCountry, onSelectCountry }: MainContentPro
           </div>
           <div className="lg:col-span-7 lg:pt-1">
             <p className="text-base leading-relaxed text-pretty text-muted-foreground">
-              We anchor each country to its long-term climatological mean (CCKP normal, 1991–2020) and
+              We anchor each country to its long-term climatological mean (CCKP normal, 1991-2020) and
               modulate with live World Bank indicators where the source returns observation-grade values.
               Every series carries a transparent <span className="font-numeric text-foreground">quality</span>{" "}
-              flag — <span className="font-numeric">live</span>,{" "}
+              flag - <span className="font-numeric">live</span>,{" "}
               <span className="font-numeric">estimated</span> or{" "}
-              <span className="font-numeric">unavailable</span> — so policy work can attribute correctly.
+              <span className="font-numeric">unavailable</span> - so policy work can attribute correctly.
             </p>
-            <Button
-              variant="link"
-              asChild
-              className="mt-4 h-auto p-0 text-secondary"
-            >
-              <a
-                href="https://github.com/Neuravox-Foundation/climachain"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                Read the methodology
-                <ArrowUpRight className="ml-1 size-4" />
-              </a>
-            </Button>
           </div>
         </section>
       )}

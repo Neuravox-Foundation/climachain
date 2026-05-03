@@ -130,7 +130,7 @@ export function AIInsightsPanel({
             Synthesise a {LABEL[dataType]?.toLowerCase() ?? dataType} brief grounded in the actual {countryName} series above.
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            Output: 4–5 sentence policy memo with country-specific numbers and recommendations.
+            Output: 4-5 sentence policy memo with country-specific numbers and recommendations.
           </p>
         </div>
       )}

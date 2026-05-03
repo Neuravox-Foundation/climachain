@@ -45,14 +45,14 @@ export function RainfallChart({ historicalData, projectionData, countryName }: R
       </header>
 
       <div className="grid grid-cols-1 gap-px bg-outline-variant/20 sm:grid-cols-3">
-        <Stat label="Historical mean" value={histAvg != null ? `${Math.round(histAvg)} mm` : "—"} />
-        <Stat label="Projection mean" value={projAvg != null ? `${Math.round(projAvg)} mm` : "—"} />
+        <Stat label="Historical mean" value={histAvg != null ? `${Math.round(histAvg)} mm` : "-"} />
+        <Stat label="Projection mean" value={projAvg != null ? `${Math.round(projAvg)} mm` : "-"} />
         <Stat
           label="Δ vs baseline"
           value={
             change != null && changePct != null
               ? `${change > 0 ? "+" : ""}${Math.round(change)} mm  ·  ${change > 0 ? "+" : ""}${changePct.toFixed(1)}%`
-              : "—"
+              : "-"
           }
         />
       </div>
@@ -114,7 +114,7 @@ export function RainfallChart({ historicalData, projectionData, countryName }: R
 
       <p className="mt-8 text-xs text-muted-foreground">
         <span className="label-tech-sm">Source</span>
-        <span className="ml-2">{historicalData?.source ?? projectionData?.source ?? "—"}</span>
+        <span className="ml-2">{historicalData?.source ?? projectionData?.source ?? "-"}</span>
       </p>
     </article>
   )

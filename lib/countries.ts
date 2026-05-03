@@ -88,9 +88,9 @@ export function getCountryByCode(code: string): Country | undefined {
  * the same numbers.
  */
 export interface ClimateBaseline {
-  /** Mean annual temperature in °C, 1991–2020 normal */
+  /** Mean annual temperature in °C, 1991-2020 normal */
   meanTempC: number
-  /** Mean annual precipitation in mm, 1991–2020 normal */
+  /** Mean annual precipitation in mm, 1991-2020 normal */
   meanPrecipMm: number
   /** Long-term warming trend in °C per decade */
   warmingPerDecadeC: number
@@ -100,7 +100,7 @@ export interface ClimateBaseline {
   co2Kt: number
   /** Annual CO2 growth rate (fractional) */
   co2GrowthRate: number
-  /** Vegetation greenness baseline (NDVI 0–1) */
+  /** Vegetation greenness baseline (NDVI 0-1) */
   ndviBase: number
   /** Seasonal NDVI amplitude */
   ndviAmplitude: number
@@ -121,7 +121,7 @@ const DEFAULT_BASELINE: ClimateBaseline = {
 }
 
 const BASELINES: Record<string, Partial<ClimateBaseline>> = {
-  // North Africa — hot, arid
+  // North Africa - hot, arid
   DZA: { meanTempC: 22.5, meanPrecipMm: 89, co2Kt: 178000, ndviBase: 0.18, ndviAmplitude: 0.08 },
   EGY: { meanTempC: 22.1, meanPrecipMm: 51, co2Kt: 250000, ndviBase: 0.15, ndviAmplitude: 0.06 },
   LBY: { meanTempC: 22.8, meanPrecipMm: 56, co2Kt: 60000, ndviBase: 0.12, ndviAmplitude: 0.05 },
@@ -129,7 +129,7 @@ const BASELINES: Record<string, Partial<ClimateBaseline>> = {
   SDN: { meanTempC: 26.9, meanPrecipMm: 416, co2Kt: 21000, ndviBase: 0.25, ndviAmplitude: 0.16 },
   TUN: { meanTempC: 19.2, meanPrecipMm: 207, co2Kt: 32000, ndviBase: 0.22, ndviAmplitude: 0.12 },
 
-  // West Africa — tropical, monsoon
+  // West Africa - tropical, monsoon
   BEN: { meanTempC: 27.5, meanPrecipMm: 1037, co2Kt: 7500, ndviBase: 0.5, ndviAmplitude: 0.22 },
   BFA: { meanTempC: 28.3, meanPrecipMm: 748, co2Kt: 4400, ndviBase: 0.36, ndviAmplitude: 0.24 },
   CPV: { meanTempC: 23.3, meanPrecipMm: 228, co2Kt: 700, ndviBase: 0.18, ndviAmplitude: 0.1 },
@@ -147,7 +147,7 @@ const BASELINES: Record<string, Partial<ClimateBaseline>> = {
   SLE: { meanTempC: 26.4, meanPrecipMm: 2526, co2Kt: 1100, ndviBase: 0.62, ndviAmplitude: 0.18 },
   TGO: { meanTempC: 27.4, meanPrecipMm: 1168, co2Kt: 3300, ndviBase: 0.52, ndviAmplitude: 0.2 },
 
-  // East Africa — equatorial highlands
+  // East Africa - equatorial highlands
   BDI: { meanTempC: 19.9, meanPrecipMm: 1274, co2Kt: 600, ndviBase: 0.54, ndviAmplitude: 0.14 },
   COM: { meanTempC: 25.5, meanPrecipMm: 1903, co2Kt: 250, ndviBase: 0.6, ndviAmplitude: 0.1 },
   DJI: { meanTempC: 28.4, meanPrecipMm: 220, co2Kt: 700, ndviBase: 0.14, ndviAmplitude: 0.06 },
@@ -167,7 +167,7 @@ const BASELINES: Record<string, Partial<ClimateBaseline>> = {
   ZMB: { meanTempC: 21.4, meanPrecipMm: 1020, co2Kt: 7500, ndviBase: 0.48, ndviAmplitude: 0.22 },
   ZWE: { meanTempC: 21.0, meanPrecipMm: 657, co2Kt: 11000, ndviBase: 0.4, ndviAmplitude: 0.22 },
 
-  // Central Africa — equatorial rainforest
+  // Central Africa - equatorial rainforest
   CMR: { meanTempC: 24.6, meanPrecipMm: 1604, co2Kt: 9500, ndviBase: 0.62, ndviAmplitude: 0.14 },
   CAF: { meanTempC: 24.9, meanPrecipMm: 1343, co2Kt: 700, ndviBase: 0.58, ndviAmplitude: 0.18 },
   TCD: { meanTempC: 26.8, meanPrecipMm: 322, co2Kt: 1700, ndviBase: 0.24, ndviAmplitude: 0.18 },
@@ -177,7 +177,7 @@ const BASELINES: Record<string, Partial<ClimateBaseline>> = {
   COG: { meanTempC: 24.6, meanPrecipMm: 1646, co2Kt: 4400, ndviBase: 0.62, ndviAmplitude: 0.14 },
   STP: { meanTempC: 25.4, meanPrecipMm: 3200, co2Kt: 150, ndviBase: 0.66, ndviAmplitude: 0.1 },
 
-  // Southern Africa — varied
+  // Southern Africa - varied
   AGO: { meanTempC: 21.6, meanPrecipMm: 1010, co2Kt: 22000, ndviBase: 0.46, ndviAmplitude: 0.22 },
   BWA: { meanTempC: 21.5, meanPrecipMm: 416, co2Kt: 7500, ndviBase: 0.28, ndviAmplitude: 0.2 },
   SWZ: { meanTempC: 17.5, meanPrecipMm: 788, co2Kt: 1100, ndviBase: 0.44, ndviAmplitude: 0.2 },

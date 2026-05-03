@@ -4,13 +4,13 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Institutional Authority — light-first.
+   Institutional Authority - light-first.
    Anchored in deep navies (#00236f), action blues (#0058be) and heritage
    teal (#00312c) on a cool off-white canvas. Tonal layering replaces 1px
    borders for sectioning. No glassmorphism, no glow effects.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #f8f9ff;            /* surface — primary canvas */
+  --background: #f8f9ff;            /* surface - primary canvas */
   --surface: #f8f9ff;
   --surface-bright: #ffffff;
   --surface-container-lowest: #ffffff;
@@ -61,7 +61,7 @@
   --input: color-mix(in srgb, var(--outline-variant) 30%, transparent);
   --ring: var(--secondary);
 
-  /* Data viz — institutional, no neon */
+  /* Data viz - institutional, no neon */
   --chart-1: #00236f;               /* navy */
   --chart-2: #0058be;               /* action blue */
   --chart-3: #00312c;               /* heritage teal */
@@ -83,7 +83,7 @@
                     0 24px 40px -28px color-mix(in srgb, #0b1c30 8%, transparent);
 }
 
-/* Dark mode kept restrained — same hierarchy, lower-luminance surfaces. */
+/* Dark mode kept restrained - same hierarchy, lower-luminance surfaces. */
 .dark {
   --background: #07101e;
   --surface: #07101e;

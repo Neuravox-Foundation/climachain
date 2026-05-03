@@ -130,7 +130,7 @@ export function ExportButtons({ countryName, countryCode, dataType, data, insigh
         <Download className="size-4 text-muted-foreground" />
         <p className="text-sm">
           <span className="font-medium text-foreground">Export this view</span>
-          <span className="ml-1 text-muted-foreground">— PDF brief or Excel workbook with raw series</span>
+          <span className="ml-1 text-muted-foreground">- PDF brief or Excel workbook with raw series</span>
         </p>
       </div>
       <div className="flex flex-wrap gap-2">
@@ -171,11 +171,11 @@ function labelFor(dataType: string): string {
 }
 
 function sourceFor(dataType: string, data: any): string {
-  if (dataType === "temperature") return data?.historical?.source ?? "—"
-  if (dataType === "rainfall") return data?.historical?.source ?? "—"
-  if (dataType === "co2") return data?.source ?? "—"
+  if (dataType === "temperature") return data?.historical?.source ?? "-"
+  if (dataType === "rainfall") return data?.historical?.source ?? "-"
+  if (dataType === "co2") return data?.source ?? "-"
   if (dataType === "ndvi") return "Modeled NDVI baseline"
-  return "—"
+  return "-"
 }
 
 function computeSummary(dataType: string, data: any): Array<[string, string]> {
@@ -185,19 +185,19 @@ function computeSummary(dataType: string, data: any): Array<[string, string]> {
       const a = data?.analysis
       const avg = series.length ? series.reduce((s: number, d: any) => s + d.temperature, 0) / series.length : null
       return [
-        ["Average", avg != null ? `${avg.toFixed(2)} °C` : "—"],
-        ["Trend", a?.trend ?? "—"],
-        ["Per decade", a?.changePerDecade != null ? `${a.changePerDecade > 0 ? "+" : ""}${a.changePerDecade} °C` : "—"],
-        ["Period", `${series[0]?.year ?? "—"}–${series[series.length - 1]?.year ?? "—"}`],
+        ["Average", avg != null ? `${avg.toFixed(2)} °C` : "-"],
+        ["Trend", a?.trend ?? "-"],
+        ["Per decade", a?.changePerDecade != null ? `${a.changePerDecade > 0 ? "+" : ""}${a.changePerDecade} °C` : "-"],
+        ["Period", `${series[0]?.year ?? "-"}-${series[series.length - 1]?.year ?? "-"}`],
       ]
     }
     case "rainfall": {
       const series = data?.historical?.data ?? []
       const avg = series.length ? series.reduce((s: number, d: any) => s + d.rainfall, 0) / series.length : null
       return [
-        ["Average", avg != null ? `${Math.round(avg)} mm` : "—"],
-        ["Period", `${series[0]?.year ?? "—"}–${series[series.length - 1]?.year ?? "—"}`],
-        ["Source", data?.historical?.source ?? "—"],
+        ["Average", avg != null ? `${Math.round(avg)} mm` : "-"],
+        ["Period", `${series[0]?.year ?? "-"}-${series[series.length - 1]?.year ?? "-"}`],
+        ["Source", data?.historical?.source ?? "-"],
       ]
     }
     case "co2": {
@@ -205,16 +205,16 @@ function computeSummary(dataType: string, data: any): Array<[string, string]> {
       const latest = series[series.length - 1]?.co2
       const earliest = series[0]?.co2
       return [
-        ["Latest", latest != null ? `${Math.round(latest)} kt` : "—"],
-        ["Earliest", earliest != null ? `${Math.round(earliest)} kt` : "—"],
-        ["Period", `${series[0]?.year ?? "—"}–${series[series.length - 1]?.year ?? "—"}`],
+        ["Latest", latest != null ? `${Math.round(latest)} kt` : "-"],
+        ["Earliest", earliest != null ? `${Math.round(earliest)} kt` : "-"],
+        ["Period", `${series[0]?.year ?? "-"}-${series[series.length - 1]?.year ?? "-"}`],
       ]
     }
     case "ndvi": {
       const series = Array.isArray(data) ? data : data?.data ?? []
       const avg = series.length ? series.reduce((s: number, d: any) => s + d.ndvi, 0) / series.length : null
       return [
-        ["Mean NDVI", avg != null ? avg.toFixed(3) : "—"],
+        ["Mean NDVI", avg != null ? avg.toFixed(3) : "-"],
         ["Records", `${series.length}`],
       ]
     }

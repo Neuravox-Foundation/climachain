@@ -55,9 +55,9 @@ export async function POST(request: NextRequest) {
       system:
         "You are a climate-policy analyst writing for African ministries, multilateral lenders and development banks. " +
         "You will be given a draft brief computed deterministically from the underlying data. " +
-        "Rewrite it in 110–160 words, preserving every number exactly as stated. " +
+        "Rewrite it in 110-160 words, preserving every number exactly as stated. " +
         "Tighten the language and strengthen the policy reasoning, but do not add fictional figures or speculate beyond what the draft contains. " +
-        "Return prose only — no headings, bullet lists or markdown.",
+        "Return prose only - no headings, bullet lists or markdown.",
       prompt:
         `Country: ${countryName} (${countryCode}). Data type: ${dataType}.\n\n` +
         `Draft brief grounded in the loaded series:\n${dataGroundedBrief}`,

@@ -26,13 +26,13 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: "ClimaChain — Climate Intelligence for Africa",
+    default: "ClimaChain - Climate Intelligence for Africa",
     template: "%s · ClimaChain",
   },
   description:
     "Institutional-grade climate intelligence for African nations. Temperature, precipitation, CO₂ emissions and vegetation indices, paired with policy briefs grounded in World Bank and CMIP6 data.",
   applicationName: "ClimaChain",
-  authors: [{ name: "Neuravox Foundation", url: "https://github.com/Neuravox-Foundation" }],
+  authors: [{ name: "Neuravox Foundation" }],
   publisher: "Neuravox Foundation",
   keywords: [
     "climate data",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   ],
   metadataBase: new URL("https://climachain.online"),
   openGraph: {
-    title: "ClimaChain — Climate Intelligence for Africa",
+    title: "ClimaChain - Climate Intelligence for Africa",
     description: "A Neuravox Foundation platform for climate analytics across the African continent.",
     type: "website",
     siteName: "ClimaChain",

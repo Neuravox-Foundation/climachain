@@ -30,7 +30,7 @@ export function CountrySummaryStrip({ country, temperature, rainfall, co2, loadi
 
   const coverage =
     temperature.historical?.startYear && temperature.projection?.endYear
-      ? `${temperature.historical.startYear}–${temperature.projection.endYear}`
+      ? `${temperature.historical.startYear}-${temperature.projection.endYear}`
       : null
 
   return (
@@ -61,7 +61,7 @@ export function CountrySummaryStrip({ country, temperature, rainfall, co2, loadi
           <div className="grid grid-cols-2 gap-px bg-outline-variant/20 lg:grid-cols-4">
             <Metric
               label="Mean temp"
-              value={tempAvg != null ? `${tempAvg.toFixed(1)}°` : "—"}
+              value={tempAvg != null ? `${tempAvg.toFixed(1)}°` : "-"}
               suffix="C"
               delta={
                 tempDelta != null
@@ -71,13 +71,13 @@ export function CountrySummaryStrip({ country, temperature, rainfall, co2, loadi
             />
             <Metric
               label="Annual rain"
-              value={rainfallAvg != null ? `${Math.round(rainfallAvg)}` : "—"}
+              value={rainfallAvg != null ? `${Math.round(rainfallAvg)}` : "-"}
               suffix="mm"
               delta={null}
             />
             <Metric
               label="Latest CO₂"
-              value={co2Latest != null ? formatKt(co2Latest) : "—"}
+              value={co2Latest != null ? formatKt(co2Latest) : "-"}
               suffix="kt"
               delta={
                 co2Delta != null
@@ -88,7 +88,7 @@ export function CountrySummaryStrip({ country, temperature, rainfall, co2, loadi
                   : null
               }
             />
-            <Metric label="Coverage" value={coverage ?? "—"} suffix="" delta={null} mono />
+            <Metric label="Coverage" value={coverage ?? "-"} suffix="" delta={null} mono />
           </div>
         </div>
       </div>

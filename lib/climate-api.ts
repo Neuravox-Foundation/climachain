@@ -182,7 +182,7 @@ export async function getRainfallSeries(
   const points = type === "historical" ? await fetchWorldBank(country, "AG.LND.PRCP.MM", range.start, range.end) : null
 
   let series: RainfallData[] = []
-  let source = "World Bank — average annual precipitation"
+  let source = "World Bank - average annual precipitation"
   let quality: DataQuality = "live"
 
   if (points && type === "historical") {
@@ -241,7 +241,7 @@ export async function getCO2Series(country: string): Promise<ClimateDataResponse
   // Indicator returns Mt CO2; convert to kt for display consistency.
 
   let series: CO2Data[] = []
-  let source = "World Bank — total CO₂ emissions (excluding LULUCF)"
+  let source = "World Bank - total CO₂ emissions (excluding LULUCF)"
   let quality: DataQuality = "live"
 
   if (points) {

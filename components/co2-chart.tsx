@@ -39,7 +39,7 @@ export function CO2Chart({ data, countryName }: CO2ChartProps) {
           </p>
         </div>
         <p className="font-numeric text-xs text-muted-foreground">
-          {data.startYear}–{data.endYear}
+          {data.startYear}-{data.endYear}
         </p>
       </header>
 
@@ -126,7 +126,7 @@ function Stat({
 }
 
 function formatKt(value: number): string {
-  if (!Number.isFinite(value)) return "—"
+  if (!Number.isFinite(value)) return "-"
   if (Math.abs(value) >= 1_000_000) return `${(value / 1_000_000).toFixed(2)}M`
   if (Math.abs(value) >= 1_000) return `${(value / 1_000).toFixed(1)}K`
   return `${Math.round(value)}`

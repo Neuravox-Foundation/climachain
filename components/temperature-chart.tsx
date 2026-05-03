@@ -129,7 +129,7 @@ export function TemperatureChart({ historicalData, projectionData, analysis, cou
 
       <p className="mt-8 text-xs text-muted-foreground">
         <span className="label-tech-sm">Source</span>{" "}
-        <span className="ml-2">{historicalData?.source ?? projectionData?.source ?? "—"}</span>
+        <span className="ml-2">{historicalData?.source ?? projectionData?.source ?? "-"}</span>
       </p>
     </article>
   )
@@ -145,7 +145,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 }
 
 function signed(value: number, places: number): string {
-  if (!Number.isFinite(value)) return "—"
+  if (!Number.isFinite(value)) return "-"
   return `${value > 0 ? "+" : ""}${value.toFixed(places)}`
 }
 
