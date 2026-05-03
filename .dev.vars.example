@@ -3,7 +3,15 @@
 #
 # DEEPSEEK_API_KEY enables the AI brief refinement step. When unset, the
 # /api/ai/insights route still returns a complete, data-grounded brief
-# computed deterministically from the loaded series — it just isn't
+# computed deterministically from the loaded series - it just isn't
 # rewritten by DeepSeek for tone. Get a key at https://platform.deepseek.com.
-
 DEEPSEEK_API_KEY=sk-...
+
+# Copernicus Data Space Ecosystem credentials. When set, /api/climate/ndvi
+# fetches real Sentinel-2 NDVI from the Sentinel Hub Statistics API and
+# caches per-country results in NDVI_KV for 7 days. Without these, the route
+# returns the deterministic NDVI model.
+# Generate at https://shapps.dataspace.copernicus.eu/dashboard/#/account/settings
+# (Sentinel Hub > User settings > OAuth clients > Create).
+CDSE_CLIENT_ID=
+CDSE_CLIENT_SECRET=

@@ -52,7 +52,7 @@ export function AIInsightsPanel({
         body: JSON.stringify({ countryName, countryCode, dataType, data, analysis }),
       })
       if (!response.ok) {
-        const body = await response.json().catch(() => ({}))
+        const body = (await response.json().catch(() => ({}))) as { error?: string }
         throw new Error(body.error ?? `Request failed (${response.status})`)
       }
       const result: AIInsight = await response.json()

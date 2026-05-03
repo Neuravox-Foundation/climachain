@@ -370,7 +370,7 @@ export class ClimateDataService {
     const params = new URLSearchParams({ country: countryCode, type })
     const res = await fetch(`${this.baseUrl}/temperature?${params}`)
     if (!res.ok) {
-      const body = await res.json().catch(() => ({}))
+      const body = (await res.json().catch(() => ({}))) as { error?: string }
       throw new Error(body?.error ?? `Temperature request failed (${res.status})`)
     }
     return res.json()
@@ -383,7 +383,7 @@ export class ClimateDataService {
     const params = new URLSearchParams({ country: countryCode, type })
     const res = await fetch(`${this.baseUrl}/rainfall?${params}`)
     if (!res.ok) {
-      const body = await res.json().catch(() => ({}))
+      const body = (await res.json().catch(() => ({}))) as { error?: string }
       throw new Error(body?.error ?? `Rainfall request failed (${res.status})`)
     }
     return res.json()
@@ -392,7 +392,7 @@ export class ClimateDataService {
   static async getCO2Data(countryCode: string): Promise<ClimateDataResponse<CO2Data>> {
     const res = await fetch(`${this.baseUrl}/co2?country=${countryCode}`)
     if (!res.ok) {
-      const body = await res.json().catch(() => ({}))
+      const body = (await res.json().catch(() => ({}))) as { error?: string }
       throw new Error(body?.error ?? `CO₂ request failed (${res.status})`)
     }
     return res.json()
@@ -401,7 +401,7 @@ export class ClimateDataService {
   static async getNDVIData(countryCode: string): Promise<NDVIResponse> {
     const res = await fetch(`${this.baseUrl}/ndvi?country=${countryCode}`)
     if (!res.ok) {
-      const body = await res.json().catch(() => ({}))
+      const body = (await res.json().catch(() => ({}))) as { error?: string }
       throw new Error(body?.error ?? `NDVI request failed (${res.status})`)
     }
     return res.json()

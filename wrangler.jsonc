@@ -14,10 +14,18 @@
     { "pattern": "climachain.online", "custom_domain": true },
     { "pattern": "www.climachain.online", "custom_domain": true }
   ],
+  "kv_namespaces": [
+    {
+      "binding": "NDVI_KV",
+      "id": "c4d63bcf211348ef8dda265b92857399"
+    }
+  ],
   "vars": {
     "NEXT_PUBLIC_APP_NAME": "ClimaChain"
   }
   // Set sensitive values via:
   //   npx wrangler secret put DEEPSEEK_API_KEY
+  //   npx wrangler secret put CDSE_CLIENT_ID
+  //   npx wrangler secret put CDSE_CLIENT_SECRET
   // For local dev, copy .dev.vars.example to .dev.vars
 }
