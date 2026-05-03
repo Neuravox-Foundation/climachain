@@ -1,0 +1,5 @@
+# Local development environment variables for Wrangler
+# Copy to .dev.vars and fill in real values
+# Do NOT commit .dev.vars
+
+OPENAI_API_KEY=sk-...
