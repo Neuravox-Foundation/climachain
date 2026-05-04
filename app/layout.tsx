@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://climachain.online"),
   openGraph: {
     title: "ClimaChain - Climate Intelligence for Africa",
-    description: "A Neuravox Foundation platform for climate analytics across the African continent.",
+    description: "A Neuravox platform for climate analytics across the African continent.",
     type: "website",
     siteName: "ClimaChain",
     url: "https://climachain.online",

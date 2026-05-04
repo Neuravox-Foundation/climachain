@@ -49,7 +49,7 @@ function Footer() {
           <img src="/icon.png" alt="" width={20} height={20} className="opacity-80" />
           <span className="font-display text-foreground">ClimaChain</span>
           <span aria-hidden>·</span>
-          <span>A Neuravox Foundation platform</span>
+          <span>A Neuravox platform</span>
         </div>
         <div className="label-tech-sm flex items-center gap-3">
           <span>Sources: World Bank, CMIP6, Copernicus</span>
