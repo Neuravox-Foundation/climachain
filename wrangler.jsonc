@@ -18,6 +18,11 @@
     {
       "binding": "NDVI_KV",
       "id": "c4d63bcf211348ef8dda265b92857399"
+    },
+    // Pilot action-workflow store (UNICEF Yobe pilot).
+    {
+      "binding": "PILOT_KV",
+      "id": "6a7b0579f0f64ceab8a5e9f38bba3715"
     }
   ],
   "vars": {
