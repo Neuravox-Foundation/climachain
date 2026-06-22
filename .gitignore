@@ -38,3 +38,11 @@ next-env.d.ts
 .vscode/
 .idea/
 .DS_Store
+
+# UNICEF pilot — internal/sensitive docs (keep out of the public repo)
+*.docx
+*.pdf
+BUILD_SPEC_Yobe_Pilot.md
+CLAUDE_CODE_BUILD_PROMPT.md
+DEMO_CLICKPATH.md
+DEMO_SCRIPT.md
