@@ -15,8 +15,8 @@ export default async function LgaPage({ params }: { params: Promise<{ code: stri
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-[#00236f]">{model.lga.name} LGA</h1>
-          {model.tagline ? <p className="text-sm font-medium text-[#0058be]">{model.tagline}</p> : null}
+          <h1 className="font-display text-2xl font-bold text-primary">{model.lga.name} LGA</h1>
+          {model.tagline ? <p className="text-sm font-medium text-secondary">{model.tagline}</p> : null}
           <p className="text-sm text-muted-foreground">
             {model.counts.severe} severe · {model.counts.high} high · {model.counts.moderate} moderate · {model.counts.low} low
           </p>

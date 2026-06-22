@@ -12,7 +12,7 @@ A [Neuravox Foundation](https://github.com/Neuravox-Foundation) platform.
 - **Framework**: Next.js 15 (App Router)
 - **Hosting**: Cloudflare Workers via [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare) - single-Worker bundle with `nodejs_compat`
 - **UI**: Tailwind v4, Radix primitives, shadcn-style components
-- **Typography**: Manrope (display) · Inter (body) · Space Grotesk (numeric)
+- **Typography**: Public Sans across all levels (institutional clarity, high-glare legibility)
 - **Charts**: Recharts
 - **AI**: DeepSeek via the [Vercel AI SDK](https://sdk.vercel.ai/) (OpenAI-compatible endpoint at `https://api.deepseek.com/v1`)
 - **Data**: World Bank Indicators API (live), deterministically reconstructed
@@ -53,11 +53,12 @@ For repo-driven deploys via the Cloudflare dashboard:
 
 ## Design system
 
-Implements the **Institutional Authority** design system: light-first canvas
-(`#f8f9ff`), institutional navy primary (`#00236f`), action blue secondary
-(`#0058be`) and heritage teal tertiary (`#00312c`). Sectioning uses
-surface-container tonal layering, not 1px borders. No glassmorphism, no glow
-effects. See `app/globals.css` for the full token system.
+Implements the **Arid Health Management** design system ("Geology of Care"):
+warm light-first "Salt Sand" canvas (`#fff8f5`), terracotta primary (`#98421f`),
+deep-sage secondary (`#396660`) and ochre/sand tertiary. Modern-corporate with a
+tactile influence — flat surfaces, hard tonal layers and directional shadows
+(no ambient blur, no glow), 0.25rem radii, 8px spacing rhythm. See
+`app/globals.css` for the full token system.
 
 ## Project layout
 

@@ -27,13 +27,13 @@ export function ExportBar({ rows, lga }: { rows: FacilityRow[]; lga?: string }) 
       doc.setFont("helvetica", "bold"); doc.setFontSize(16)
       doc.text("Yobe Immunization Continuity — Weekly Watch", 40, 50)
       doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(110)
-      doc.text(`Generated ${new Date().toLocaleString()} · UNICEF pilot`, 40, 68)
+      doc.text(`Generated ${new Date().toLocaleString()} · Yobe pilot`, 40, 68)
       autoTable(doc, {
         startY: 86,
         head: [["Facility", "LGA", "Score", "Band", "Top driver"]],
         body: rows.map((r) => [r.name, r.lgaName, String(r.score), r.band, r.topDriver]),
         styles: { fontSize: 9 },
-        headStyles: { fillColor: [0, 35, 111] },
+        headStyles: { fillColor: [152, 66, 31] },
       })
       doc.save("yobe_pilot_weekly_brief.pdf")
     } catch {

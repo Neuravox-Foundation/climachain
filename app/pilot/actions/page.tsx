@@ -21,7 +21,7 @@ export default async function ActionsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-[#00236f]">Action queue</h1>
+        <h1 className="font-display text-2xl font-bold text-primary">Action queue</h1>
         <p className="text-sm text-muted-foreground">{items.length} high/severe facilities, most urgent first. Manage the response, not just the risk.</p>
         <p className="mt-1 text-xs text-muted-foreground">
           Severe facilities lead. <span className="font-medium text-amber-700">Needs review</span> = not yet actioned this week.

@@ -19,7 +19,7 @@ export function FacilityTable({ rows, showLga = true }: { rows: FacilityRow[]; s
         {rows.map((r) => (
           <TableRow key={r.id}>
             <TableCell>
-              <Link href={`/pilot/facility/${r.id}`} className="font-medium text-[#0058be] hover:underline">
+              <Link href={`/pilot/facility/${r.id}`} className="font-medium text-secondary hover:underline">
                 {r.name}
               </Link>
             </TableCell>

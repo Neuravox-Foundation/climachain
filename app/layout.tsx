@@ -1,26 +1,16 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
-import { Inter, Manrope, Space_Grotesk } from "next/font/google"
+import { Public_Sans } from "next/font/google"
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
-const inter = Inter({
+// Public Sans across all levels - institutional clarity, high-glare legibility.
+const publicSans = Public_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
-  display: "swap",
-})
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-})
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-mono",
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 })
 
@@ -62,8 +52,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f8f9ff" },
-    { media: "(prefers-color-scheme: dark)", color: "#07101e" },
+    { media: "(prefers-color-scheme: light)", color: "#fff8f5" },
+    { media: "(prefers-color-scheme: dark)", color: "#16110e" },
   ],
 }
 
@@ -74,7 +64,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased ${inter.variable} ${manrope.variable} ${spaceGrotesk.variable}`}>
+      <body className={`font-sans antialiased ${publicSans.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <Suspense fallback={null}>{children}</Suspense>
           <Toaster richColors position="top-right" />

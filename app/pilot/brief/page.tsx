@@ -15,7 +15,7 @@ export default function WeeklyBriefPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-bold text-[#00236f]">Weekly operational brief</h1>
+          <h1 className="font-display text-2xl font-bold text-primary">Weekly operational brief</h1>
           <p className="text-sm text-muted-foreground">For state and LGA immunization teams. {flagged.length} facilities flagged this week.</p>
         </div>
         <ExportBar rows={flagged} />

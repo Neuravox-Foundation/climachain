@@ -4,49 +4,50 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Institutional Authority - light-first.
-   Anchored in deep navies (#00236f), action blues (#0058be) and heritage
-   teal (#00312c) on a cool off-white canvas. Tonal layering replaces 1px
-   borders for sectioning. No glassmorphism, no glow effects.
+   Arid Health Management - light-first.
+   "Geology of Care": terracotta primary (#98421f), deep-sage secondary
+   (#396660) and ochre/sand tertiary on a warm "Salt Sand" canvas (#fff8f5).
+   Modern-corporate with tactile influence: flat surfaces, hard tonal layers
+   and directional shadows (no ambient blur, no glow). Public Sans throughout.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #f8f9ff;            /* surface - primary canvas */
-  --surface: #f8f9ff;
-  --surface-bright: #ffffff;
+  --background: #fff8f5;            /* surface - Salt Sand canvas */
+  --surface: #fff8f5;
+  --surface-bright: #fff8f5;
   --surface-container-lowest: #ffffff;
-  --surface-container-low: #f1f3fb;
-  --surface-container: #e9edf7;
-  --surface-container-high: #dde2f0;
-  --surface-container-highest: #d2d8ea;
+  --surface-container-low: #fcf2ed;
+  --surface-container: #f6ece7;
+  --surface-container-high: #f0e6e2;
+  --surface-container-highest: #eae1dc;
 
-  --foreground: #0b1c30;            /* on_surface */
-  --muted-foreground: #4a5b73;
-  --on-surface-variant: #6a7790;
+  --foreground: #1f1b18;            /* on_surface - Charcoal Earth */
+  --muted-foreground: #56423c;
+  --on-surface-variant: #56423c;
 
-  --primary: #00236f;               /* institutional navy */
+  --primary: #98421f;               /* Terracotta */
   --primary-foreground: #ffffff;
-  --primary-container: #1a3686;
-  --on-primary-container: #d6dffb;
+  --primary-container: #ffdbcf;
+  --on-primary-container: #7c2d0b;
 
-  --secondary: #0058be;             /* action blue */
+  --secondary: #396660;             /* Deep Sage */
   --secondary-foreground: #ffffff;
-  --secondary-container: #d8e2ff;
-  --on-secondary-container: #001a43;
+  --secondary-container: #bcece4;
+  --on-secondary-container: #204e48;
 
-  --tertiary: #00312c;              /* heritage teal */
+  --tertiary: #74571e;              /* Ochre / Sand */
   --tertiary-foreground: #ffffff;
-  --tertiary-container: #b3ece3;
-  --on-tertiary-container: #00201b;
+  --tertiary-container: #ffdea6;
+  --on-tertiary-container: #5c4209;
 
-  --accent: #0058be;
-  --accent-foreground: #ffffff;
+  --accent: #f6ece7;
+  --accent-foreground: #1f1b18;
 
   --destructive: #ba1a1a;
   --destructive-foreground: #ffffff;
   --error-container: #ffdad6;
 
-  --success: #15803d;
-  --warning: #b6651b;
+  --success: #2f6a4f;
+  --warning: #b8843f;
 
   --card: var(--surface-container-lowest);
   --card-foreground: var(--foreground);
@@ -54,21 +55,21 @@
   --popover-foreground: var(--foreground);
   --muted: var(--surface-container-low);
 
-  /* Outline tokens (used at low opacity per "Ghost Border" rule) */
-  --outline: #6a7790;
-  --outline-variant: #c1cad9;
-  --border: color-mix(in srgb, var(--outline-variant) 40%, transparent);
-  --input: color-mix(in srgb, var(--outline-variant) 30%, transparent);
+  /* Outline tokens - visible 1px sand borders (Level 1 cards) */
+  --outline: #89726b;
+  --outline-variant: #dcc1b8;
+  --border: color-mix(in srgb, var(--outline-variant) 70%, transparent);
+  --input: color-mix(in srgb, var(--outline-variant) 60%, transparent);
   --ring: var(--secondary);
 
-  /* Data viz - institutional, no neon */
-  --chart-1: #00236f;               /* navy */
-  --chart-2: #0058be;               /* action blue */
-  --chart-3: #00312c;               /* heritage teal */
-  --chart-4: #5b6b87;               /* graphite */
-  --chart-5: #b6651b;               /* warm ochre */
+  /* Data viz - earthen palette, no neon */
+  --chart-1: #98421f;               /* terracotta */
+  --chart-2: #396660;               /* deep sage */
+  --chart-3: #b8843f;               /* ochre */
+  --chart-4: #56423c;               /* warm brown */
+  --chart-5: #b85934;               /* light terracotta */
 
-  --radius: 0.375rem;
+  --radius: 0.25rem;
 
   --sidebar: var(--surface-container-low);
   --sidebar-foreground: var(--foreground);
@@ -76,52 +77,53 @@
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: var(--surface-container);
   --sidebar-accent-foreground: var(--foreground);
-  --sidebar-border: color-mix(in srgb, var(--outline-variant) 30%, transparent);
+  --sidebar-border: color-mix(in srgb, var(--outline-variant) 50%, transparent);
   --sidebar-ring: var(--secondary);
 
-  --shadow-ambient: 0 1px 2px color-mix(in srgb, #0b1c30 6%, transparent),
-                    0 24px 40px -28px color-mix(in srgb, #0b1c30 8%, transparent);
+  /* Hard, directional shadow (90deg offset) - tactile, not fuzzy */
+  --shadow-ambient: 2px 2px 0 0 color-mix(in srgb, #1f1b18 7%, transparent),
+                    0 1px 2px color-mix(in srgb, #1f1b18 6%, transparent);
 }
 
-/* Dark mode kept restrained - same hierarchy, lower-luminance surfaces. */
+/* Dark mode - warm earth, same hierarchy at lower luminance. */
 .dark {
-  --background: #07101e;
-  --surface: #07101e;
-  --surface-bright: #16243a;
-  --surface-container-lowest: #0a162a;
-  --surface-container-low: #0e1c34;
-  --surface-container: #13243f;
-  --surface-container-high: #182d4b;
-  --surface-container-highest: #1f3760;
+  --background: #16110e;
+  --surface: #16110e;
+  --surface-bright: #2a221d;
+  --surface-container-lowest: #110d0a;
+  --surface-container-low: #1f1814;
+  --surface-container: #231b16;
+  --surface-container-high: #2e251f;
+  --surface-container-highest: #392f28;
 
-  --foreground: #e6ecf6;
-  --muted-foreground: #a0adc4;
-  --on-surface-variant: #8a98b2;
+  --foreground: #f1e4dd;
+  --muted-foreground: #d8c2b8;
+  --on-surface-variant: #d8c2b8;
 
-  --primary: #b3c5ff;
-  --primary-foreground: #001847;
-  --primary-container: #1a3686;
-  --on-primary-container: #d6dffb;
+  --primary: #ffb59b;
+  --primary-foreground: #5a1c00;
+  --primary-container: #7c2d0b;
+  --on-primary-container: #ffdbcf;
 
-  --secondary: #abc7ff;
-  --secondary-foreground: #002e6b;
-  --secondary-container: #00428f;
-  --on-secondary-container: #d8e2ff;
+  --secondary: #a1d0c8;
+  --secondary-foreground: #033731;
+  --secondary-container: #204e48;
+  --on-secondary-container: #bcece4;
 
-  --tertiary: #97d0c5;
-  --tertiary-foreground: #00382f;
-  --tertiary-container: #005045;
-  --on-tertiary-container: #b3ece3;
+  --tertiary: #e7c17d;
+  --tertiary-foreground: #3f2e00;
+  --tertiary-container: #5c4209;
+  --on-tertiary-container: #ffdea6;
 
-  --accent: #abc7ff;
-  --accent-foreground: #002e6b;
+  --accent: #231b16;
+  --accent-foreground: #f1e4dd;
 
   --destructive: #ffb4ab;
   --destructive-foreground: #690005;
   --error-container: #93000a;
 
-  --success: #4ade80;
-  --warning: #fbbf24;
+  --success: #7fd6a9;
+  --warning: #e7c17d;
 
   --card: var(--surface-container-lowest);
   --card-foreground: var(--foreground);
@@ -129,17 +131,17 @@
   --popover-foreground: var(--foreground);
   --muted: var(--surface-container-low);
 
-  --outline: #8a98b2;
-  --outline-variant: #3a4a66;
-  --border: color-mix(in srgb, var(--outline-variant) 50%, transparent);
-  --input: color-mix(in srgb, var(--outline-variant) 40%, transparent);
+  --outline: #a08d85;
+  --outline-variant: #51433d;
+  --border: color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  --input: color-mix(in srgb, var(--outline-variant) 50%, transparent);
   --ring: var(--secondary);
 
-  --chart-1: #b3c5ff;
-  --chart-2: #84a8ff;
-  --chart-3: #97d0c5;
-  --chart-4: #93a4c4;
-  --chart-5: #f5b170;
+  --chart-1: #ffb59b;
+  --chart-2: #a1d0c8;
+  --chart-3: #e7c17d;
+  --chart-4: #c9b3a8;
+  --chart-5: #ff8a66;
 
   --sidebar: var(--surface-container-low);
   --sidebar-foreground: var(--foreground);
@@ -147,17 +149,17 @@
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: var(--surface-container);
   --sidebar-accent-foreground: var(--foreground);
-  --sidebar-border: color-mix(in srgb, var(--outline-variant) 40%, transparent);
+  --sidebar-border: color-mix(in srgb, var(--outline-variant) 50%, transparent);
   --sidebar-ring: var(--secondary);
 
-  --shadow-ambient: 0 1px 2px rgba(0, 0, 0, 0.3),
-                    0 24px 40px -28px rgba(0, 0, 0, 0.5);
+  --shadow-ambient: 2px 2px 0 0 rgba(0, 0, 0, 0.4),
+                    0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 @theme inline {
   --font-sans: var(--font-sans);
-  --font-display: var(--font-display);
-  --font-mono: var(--font-mono);
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-sans);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -228,12 +230,12 @@
     font-feature-settings: "ss01" 1, "cv11" 1;
   }
   ::selection {
-    background: color-mix(in srgb, var(--secondary) 25%, transparent);
+    background: color-mix(in srgb, var(--primary) 22%, transparent);
   }
 }
 
 @layer utilities {
-  .font-display { font-family: var(--font-display); font-feature-settings: "ss01" 1, "ss02" 1; }
+  .font-display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; }
   .font-numeric {
     font-family: var(--font-mono);
     font-feature-settings: "tnum" 1, "lnum" 1;
@@ -244,18 +246,20 @@
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.05em;
+    font-weight: 700;
     color: var(--on-surface-variant);
   }
   .label-tech-sm {
     font-family: var(--font-mono);
     font-size: 0.625rem;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.05em;
+    font-weight: 700;
     color: var(--on-surface-variant);
   }
-  .ghost-border { border: 1px solid color-mix(in srgb, var(--outline-variant) 25%, transparent); }
-  .ghost-border-strong { border: 1px solid color-mix(in srgb, var(--outline-variant) 50%, transparent); }
+  .ghost-border { border: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent); }
+  .ghost-border-strong { border: 1px solid var(--outline-variant); }
   .ambient-shadow { box-shadow: var(--shadow-ambient); }
   .text-balance { text-wrap: balance; }
   .text-pretty { text-wrap: pretty; }
@@ -269,7 +273,7 @@
     border-radius: 999px;
   }
   .focus-ring:focus-visible {
-    outline: 2px solid var(--secondary);
+    outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
 }

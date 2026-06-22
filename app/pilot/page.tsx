@@ -14,7 +14,7 @@ export default function PilotOverview() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-[#00236f]">Yobe immunization continuity — readiness console</h1>
+        <h1 className="font-display text-2xl font-bold text-primary">Yobe immunization continuity — readiness console</h1>
         <p className="text-sm text-muted-foreground">
           Facilities and LGAs at risk of climate-related disruption to routine child immunization.{" "}
           <span className="font-medium text-foreground">{o.flaggedFacilities} of {o.lgas.reduce((n, l) => n + l.total, 0)} facilities flagged</span> (high or severe) across {o.lgas.length} pilot LGAs.
@@ -42,7 +42,7 @@ export default function PilotOverview() {
           <Card key={l.code}>
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-base">
-                <Link href={`/pilot/lga/${l.code}`} className="text-[#0058be] hover:underline">{l.name} LGA</Link>
+                <Link href={`/pilot/lga/${l.code}`} className="text-secondary hover:underline">{l.name} LGA</Link>
                 <RiskBadge band={l.topBand} />
               </CardTitle>
               <CardDescription>{l.tagline}</CardDescription>

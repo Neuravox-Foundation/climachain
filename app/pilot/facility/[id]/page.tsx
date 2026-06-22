@@ -27,7 +27,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ id: s
           <p className="text-sm text-muted-foreground">
             <Link href={`/pilot/lga/${lga.code}`} className="hover:underline">{lga.name} LGA</Link> · {facility.type.toUpperCase()}
           </p>
-          <h1 className="font-display text-2xl font-bold text-[#00236f]">{facility.name}</h1>
+          <h1 className="font-display text-2xl font-bold text-primary">{facility.name}</h1>
         </div>
         <div className="flex flex-col items-end gap-1.5 text-right">
           <RiskBadge band={icri.band} score={icri.score} />
@@ -36,9 +36,9 @@ export default async function FacilityPage({ params }: { params: Promise<{ id: s
         </div>
       </div>
 
-      <div className="rounded-lg border-l-4 border-[#0058be] bg-[#0058be]/[0.06] p-4">
+      <div className="rounded-lg border-l-4 border-secondary bg-secondary/[0.06] p-4">
         <p className="text-sm">
-          <span className="font-semibold text-[#00236f]">Flagged {BAND_LABEL[icri.band]}</span>
+          <span className="font-semibold text-primary">Flagged {BAND_LABEL[icri.band]}</span>
           {brief && brief.why.length ? <> — driven mainly by {brief.why.slice(0, 2).join(" and ")}.</> : "."}
         </p>
         {brief ? (

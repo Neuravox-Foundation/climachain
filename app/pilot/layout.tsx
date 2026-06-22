@@ -1,23 +1,21 @@
 import type React from "react"
 import Link from "next/link"
-import { PilotBadge } from "@/components/pilot/pilot-badge"
 
 export default function PilotLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#f8f9ff]">
-      <header className="border-b bg-white">
+    <div className="min-h-screen bg-background">
+      <header className="border-b bg-card">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-3">
-            <Link href="/pilot" className="font-display text-lg font-bold text-[#00236f]">
+            <Link href="/pilot" className="font-display text-lg font-bold text-primary">
               ClimaChain
             </Link>
-            <PilotBadge />
           </div>
           <nav className="flex items-center gap-4 text-sm">
-            <Link href="/pilot" className="text-muted-foreground hover:text-[#0058be]">Overview</Link>
-            <Link href="/pilot/actions" className="text-muted-foreground hover:text-[#0058be]">Action queue</Link>
-            <Link href="/pilot/brief" className="text-muted-foreground hover:text-[#0058be]">Weekly brief</Link>
-            <Link href="/" className="text-muted-foreground hover:text-[#0058be]">Backbone →</Link>
+            <Link href="/pilot" className="text-muted-foreground hover:text-secondary">Overview</Link>
+            <Link href="/pilot/actions" className="text-muted-foreground hover:text-secondary">Action queue</Link>
+            <Link href="/pilot/brief" className="text-muted-foreground hover:text-secondary">Weekly brief</Link>
+            <Link href="/" className="text-muted-foreground hover:text-secondary">Backbone →</Link>
           </nav>
         </div>
       </header>
