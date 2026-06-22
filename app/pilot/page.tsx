@@ -35,7 +35,7 @@ export default function PilotOverview() {
         </p>
       </section>
 
-      {/* Severity counts — hairline-divided stat grid */}
+      {/* Severity counts – hairline-divided stat grid */}
       <section className="grid grid-cols-2 gap-px bg-outline-variant/20 lg:grid-cols-4">
         {BANDS.map(({ band, label }) => (
           <div key={band} className="bg-surface-container-low px-6 py-7">

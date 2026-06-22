@@ -1,7 +1,7 @@
 import type { FacilityRow } from "./data"
 import type { OperationalBrief } from "./types"
 
-/** CSV of the facility risk list — low-bandwidth, opens anywhere. */
+/** CSV of the facility risk list – low bandwidth, opens anywhere. */
 export function rowsToCsv(rows: FacilityRow[]): string {
   const header = ["facility_id", "facility", "lga", "type", "score", "band", "top_driver", "confidence"]
   const esc = (v: string | number) => {
@@ -29,9 +29,9 @@ export function briefToSms(brief: OperationalBrief): string {
 /** Plain-text weekly summary from flagged rows. */
 export function weeklySummaryText(rows: FacilityRow[], state = "Yobe"): string {
   const flagged = rows.filter((r) => r.band === "high" || r.band === "severe")
-  const head = `${state} immunization continuity — weekly watch. ${flagged.length} facilities flagged.`
+  const head = `${state} immunization continuity – weekly watch. ${flagged.length} facilities flagged.`
   const body = flagged
-    .map((r) => `- ${r.name} (${r.lgaName}): ${r.band} ${r.score} — ${r.topDriver}`)
+    .map((r) => `- ${r.name} (${r.lgaName}): ${r.band} ${r.score} – ${r.topDriver}`)
     .join("\n")
   return `${head}\n\n${body}`
 }

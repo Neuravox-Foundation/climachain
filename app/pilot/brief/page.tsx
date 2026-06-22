@@ -22,7 +22,7 @@ export default function WeeklyBriefPage() {
           </h1>
           <p className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
             {flagged.length} facilities flagged this week. Export as a PDF brief for the meeting, or an SMS-ready block
-            for low-bandwidth field use.
+            for low bandwidth field use.
           </p>
         </div>
         <ExportBar rows={flagged} />

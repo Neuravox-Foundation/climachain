@@ -1,20 +1,20 @@
 import type { Facility } from "./types"
 
-// MOCK pilot registry — 12 facilities across the two pilot LGAs (Yobe State).
-// Schema is real; values are placeholders until the SPHCDA data-sharing agreement
+// MOCK pilot registry – 12 facilities across the two pilot LGAs (Yobe State).
+// Schema is real; values are placeholders until the SPHCDA data sharing agreement
 // lands. Profiles are deliberately differentiated so the ICRI engine shows range:
 //
-//   Damaturu (YB-DAM) — state coordination / supervision case. Bias toward
-//     intermittent grid power, mixed outreach, stressed-but-present cold-chain,
+//   Damaturu (YB-DAM) – state coordination / supervision case. Bias toward
+//     intermittent grid power, mixed outreach, stressed-but-present cold chain,
 //     medium catchment. Skews "High", no "Severe".
-//   Potiskum (YB-POT) — field disruption / outreach case. Bias toward road/access
-//     vulnerability, outreach-heavy posts, weaker cold-chain, and (with the
+//   Potiskum (YB-POT) – field disruption / outreach case. Bias toward road/access
+//     vulnerability, outreach heavy posts, weaker cold chain, and (with the
 //     flood-dominant hazard profile) a couple of "Severe" facilities.
 //
 // IDs follow YB-DAM-00n / YB-POT-00n.
 
 export const PILOT_FACILITIES: Facility[] = [
-  // ---- Damaturu (YB-DAM) — supervision / cold-chain verification case ----
+  // ---- Damaturu (YB-DAM) – supervision / cold chain verification case ----
   {
     id: "YB-DAM-001", name: "Damaturu Central PHC", lgaCode: "YB-DAM",
     lat: 11.7466, lon: 11.9608, type: "phc",
@@ -52,7 +52,7 @@ export const PILOT_FACILITIES: Facility[] = [
     outreachReliance: "fixed", accessTier: "ok", under1Catchment: 2600,
   },
 
-  // ---- Potiskum (YB-POT) — outreach rescheduling / pre-positioning case ----
+  // ---- Potiskum (YB-POT) – outreach rescheduling / pre-positioning case ----
   {
     id: "YB-POT-001", name: "Potiskum Central PHC", lgaCode: "YB-POT",
     lat: 11.7104, lon: 11.0792, type: "phc",
@@ -99,5 +99,5 @@ export function facilitiesByLga(lgaCode: string): Facility[] {
   return PILOT_FACILITIES.filter((f) => f.lgaCode === lgaCode)
 }
 
-// Largest catchment in the pilot set — used to normalize the stakes sub-score.
+// Largest catchment in the pilot set – used to normalize the stakes sub-score.
 export const PILOT_MAX_CATCHMENT = Math.max(...PILOT_FACILITIES.map((f) => f.under1Catchment))

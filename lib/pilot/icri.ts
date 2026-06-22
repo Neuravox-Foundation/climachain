@@ -3,7 +3,7 @@ import type {
   DataQuality, IcriResult, OutreachReliance, PowerSource,
 } from "./types"
 
-// Immunization Continuity Risk Index — transparent, rule-based, pure functions.
+// Immunization Continuity Risk Index – transparent, rule based, pure functions.
 // ML may tune weights later; the core stays inspectable.
 
 export interface IcriWeights { wH: number; wV: number; wL: number }
@@ -63,11 +63,11 @@ export function bandFor(score: number): Band {
 export function defaultActionFor(band: Band): string {
   switch (band) {
     case "severe":
-      return "Pre-position vaccines and ice packs; alert LGA cold-chain officer; adjust session calendar."
+      return "Pre-position vaccines and ice packs; alert LGA cold chain officer; adjust session calendar."
     case "high":
-      return "Prioritize supportive supervision; check power and cold-chain; consider outreach reschedule."
+      return "Prioritize supportive supervision; check power and cold chain; consider outreach reschedule."
     case "moderate":
-      return "Flag in weekly review; verify cold-chain temperature logs at next visit."
+      return "Flag in weekly review; verify cold chain temperature logs at next visit."
     default:
       return "Routine monitoring. No extra action."
   }
@@ -128,15 +128,15 @@ function powerLabel(p: PowerSource): string {
     : p === "generator" ? "generator-only power" : p === "solar" ? "solar power" : "reliable grid power"
 }
 function coldChainLabel(e: ColdChainEquip, s: ColdChainStatus): string {
-  if (s === "non_functional") return "cold-chain non-functional"
-  if (s === "intermittent") return "cold-chain intermittent"
-  if (s === "unknown") return "cold-chain status unknown"
-  return e === "none" ? "no cold-chain equipment" : e === "sdd" ? "solar cold-chain (functional)" : "cold-chain functional"
+  if (s === "non_functional") return "cold chain non functional"
+  if (s === "intermittent") return "cold chain intermittent"
+  if (s === "unknown") return "cold chain status unknown"
+  return e === "none" ? "no cold chain equipment" : e === "sdd" ? "solar cold chain (functional)" : "cold chain functional"
 }
 function accessLabel(a: AccessTier): string {
   return a === "severe" ? "severe access constraint" : a === "checkpoint" ? "checkpoint access risk"
-    : a === "road_only" ? "road-only access" : "good access"
+    : a === "road_only" ? "road only access" : "good access"
 }
 function outreachLabel(o: OutreachReliance): string {
-  return o === "outreach_heavy" ? "outreach-heavy site" : o === "mixed" ? "mixed fixed/outreach" : "fixed-session site"
+  return o === "outreach_heavy" ? "outreach heavy site" : o === "mixed" ? "mixed fixed/outreach" : "fixed-session site"
 }

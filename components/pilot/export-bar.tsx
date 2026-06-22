@@ -25,7 +25,7 @@ export function ExportBar({ rows, lga }: { rows: FacilityRow[]; lga?: string }) 
       const autoTable = (autoTableMod as any).default ?? (autoTableMod as any)
       const doc = new jsPDF({ unit: "pt", format: "a4" })
       doc.setFont("helvetica", "bold"); doc.setFontSize(16)
-      doc.text("Yobe Immunization Continuity — Weekly Watch", 40, 50)
+      doc.text("Yobe Immunization Continuity – Weekly Watch", 40, 50)
       doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(110)
       doc.text(`Generated ${new Date().toLocaleString()} · Yobe pilot`, 40, 68)
       autoTable(doc, {

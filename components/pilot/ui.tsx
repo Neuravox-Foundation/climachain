@@ -1,7 +1,7 @@
 import type React from "react"
 import { cn } from "@/lib/utils"
 
-/** Flat tonal surface block — the pilot's primary "tile" (no border, no shadow). */
+/** Flat tonal surface block – the pilot's primary "tile" (no border, no shadow). */
 export function Tile({
   className,
   as: Tag = "div",

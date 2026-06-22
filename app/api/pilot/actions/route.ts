@@ -4,7 +4,7 @@ import { icriForFacility, listFacilityRows } from "@/lib/pilot/data"
 import { getFacility } from "@/lib/pilot/facilities.seed"
 import type { ActionRecord, ActionStatus } from "@/lib/pilot/types"
 
-// GET /api/pilot/actions?status=pending — the action queue (high/severe first).
+// GET /api/pilot/actions?status=pending – the action queue (high/severe first).
 export async function GET(request: NextRequest) {
   const statusFilter = request.nextUrl.searchParams.get("status") as ActionStatus | null
   const rows = listFacilityRows().filter((r) => r.band === "high" || r.band === "severe")
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({ count: filtered.length, queue: filtered }, { headers: { "Cache-Control": "no-store" } })
 }
 
-// POST /api/pilot/actions — upsert one action record (KV write).
+// POST /api/pilot/actions – upsert one action record (KV write).
 export async function POST(request: NextRequest) {
   let body: Partial<ActionRecord>
   try {

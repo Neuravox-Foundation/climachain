@@ -3,8 +3,8 @@ import type { Facility, HazardSignal } from "./types"
 // Hazard adapter. For the pilot/demo this produces a deterministic, stable
 // signal seeded from the facility id, with a hard-coded contrast between the two
 // pilot LGAs so the ICRI engine visibly shows range:
-//   Damaturu (YB-DAM) — heat + power-stress dominant, low flood.
-//   Potiskum (YB-POT) — flood + rainfall-disruption dominant, moderate heat.
+//   Damaturu (YB-DAM) – heat + power-stress dominant, low flood.
+//   Potiskum (YB-POT) – flood + rainfall-disruption dominant, moderate heat.
 // Replace the body with a real adapter over backbone climate + forecast feeds
 // (NiMet, GPM/IMERG, flood/heat products) without changing the HazardSignal shape.
 

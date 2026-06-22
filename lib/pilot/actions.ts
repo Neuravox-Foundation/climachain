@@ -24,7 +24,7 @@ function defaultRecord(facilityId: string, band: Band): ActionRecord {
     facilityId,
     category: defaultActionFor(band),
     status: "pending",
-    assignedRole: band === "severe" || band === "high" ? "LGA cold-chain officer" : "Facility in-charge",
+    assignedRole: band === "severe" || band === "high" ? "LGA cold chain officer" : "Facility in charge",
     lastReviewed: "",
     notes: "",
   }

@@ -180,7 +180,7 @@ function recommendationForRainfall(histAvg: number, projDelta: number | null): s
   if (projDelta != null && projDelta > 50) {
     return "Recommended priorities: (1) upgrade urban drainage and floodplain zoning and (2) revise hydraulic-design return periods for transport infrastructure."
   }
-  return "Recommended priorities: (1) anchor planning to multi-year rolling averages and (2) maintain real-time hydrological monitoring to catch variability early."
+  return "Recommended priorities: (1) anchor planning to multi-year rolling averages and (2) maintain real time hydrological monitoring to catch variability early."
 }
 
 /* -------------------------------------------------------------------------- */

@@ -9,11 +9,11 @@ import { buildStructuredBrief } from "./brief"
 
 const RANK: Record<Band, number> = { severe: 0, high: 1, moderate: 2, low: 3 }
 
-// Short one-line story for each pilot LGA — keeps the heat-vs-flood contrast
+// Short one-line story for each pilot LGA – keeps the heat-vs-flood contrast
 // legible at a glance on the overview and LGA screens.
 export const LGA_TAGLINE: Record<string, string> = {
-  "YB-DAM": "Heat & power stress — supervision and cold-chain verification priority",
-  "YB-POT": "Flood & outreach disruption — rescheduling and pre-positioning priority",
+  "YB-DAM": "Heat & power stress – supervision and cold chain verification priority",
+  "YB-POT": "Flood & outreach disruption – rescheduling and pre-positioning priority",
 }
 
 /** Compute the ICRI for one facility from seed + hazard (no I/O, deterministic). */
@@ -147,11 +147,11 @@ export function briefForFacility(facilityId: string): OperationalBrief | undefin
   })
 }
 
-// Per-LGA operational theme — keeps the two pilot LGAs telling different stories.
+// Per-LGA operational theme – keeps the two pilot LGAs telling different stories.
 const LGA_THEME: Record<string, { headline: string; action: string }> = {
   "YB-DAM": {
-    headline: "Damaturu this week: supervision and cold-chain verification priority.",
-    action: "Prioritize supportive supervision and verify cold-chain temperature logs at flagged facilities.",
+    headline: "Damaturu this week: supervision and cold chain verification priority.",
+    action: "Prioritize supportive supervision and verify cold chain temperature logs at flagged facilities.",
   },
   "YB-POT": {
     headline: "Potiskum this week: outreach rescheduling and pre-positioning priority.",

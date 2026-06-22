@@ -44,7 +44,7 @@ test("worst-case facility scores severe", () => {
 })
 
 test("worked example from the spec lands High", () => {
-  // 6 hot days, ice-lined fridge on intermittent grid, no solar; ~22% dropout, outreach-heavy
+  // 6 hot days, ice lined fridge on intermittent grid, no solar; ~22% dropout, outreach heavy
   const r = computeIcri(base({
     hotDays: 6, floodProbability: 0.1, rainfallAnomalyPct: 10,
     powerSource: "grid_intermittent", coldChainEquip: "ilr", coldChainStatus: "intermittent",

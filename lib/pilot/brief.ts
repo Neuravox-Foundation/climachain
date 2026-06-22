@@ -28,7 +28,7 @@ export function buildStructuredBrief(input: BriefInput): OperationalBrief {
     `${BAND_LABEL[input.band]} risk (score ${input.score}). ${atRisk} in ${input.where}.`,
     why.length ? `Main drivers: ${why.join("; ")}.` : "",
     `Action this week: ${action}`,
-    input.confidence !== "live" ? `(Confidence: ${input.confidence} — based on seeded/forecast inputs.)` : "",
+    input.confidence !== "live" ? `(Confidence: ${input.confidence} – based on seeded/forecast inputs.)` : "",
   ]
     .filter(Boolean)
     .join(" ")

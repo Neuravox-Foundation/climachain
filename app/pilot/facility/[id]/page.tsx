@@ -41,12 +41,12 @@ export default async function FacilityPage({ params }: { params: Promise<{ id: s
         </div>
       </section>
 
-      {/* Why flagged — prominent tonal tile */}
+      {/* Why flagged – prominent tonal tile */}
       <section className="border-l-2 border-primary bg-surface-container-low p-6 sm:p-8">
         <p className="label-tech-sm">Why flagged</p>
         <p className="mt-2 text-pretty text-lg leading-relaxed text-foreground">
           <span className="font-semibold text-primary">Flagged {BAND_LABEL[icri.band]}</span>
-          {brief && brief.why.length ? <> — driven mainly by {brief.why.slice(0, 2).join(" and ")}.</> : "."}
+          {brief && brief.why.length ? <> – driven mainly by {brief.why.slice(0, 2).join(" and ")}.</> : "."}
         </p>
         {brief ? (
           <p className="mt-3 text-base text-muted-foreground">
@@ -61,7 +61,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ id: s
         <SectionHeading
           eyebrow="Score"
           title="How this score is built"
-          description="Transparent, rule-based: 40% hazard · 35% vulnerability · 25% stakes"
+          description="Transparent, rule based: 40% hazard · 35% vulnerability · 25% stakes"
         />
         <div className="grid gap-px bg-outline-variant/20 lg:grid-cols-2">
           <div className="bg-surface-container-low p-6 sm:p-8">
@@ -94,7 +94,7 @@ export default async function FacilityPage({ params }: { params: Promise<{ id: s
         <SectionHeading eyebrow="Registry" title="Facility context" />
         <dl className="grid grid-cols-2 gap-px bg-outline-variant/20 sm:grid-cols-3">
           <Field label="Power" value={facility.powerSource.replace("_", " ")} />
-          <Field label="Cold-chain" value={`${facility.coldChainEquip} (${facility.coldChainStatus})`} />
+          <Field label="Cold chain" value={`${facility.coldChainEquip} (${facility.coldChainStatus})`} />
           <Field label="Access" value={facility.accessTier.replace("_", " ")} />
           <Field label="Outreach reliance" value={facility.outreachReliance.replace("_", " ")} />
           <Field label="Under-1 catchment" value={String(facility.under1Catchment)} />

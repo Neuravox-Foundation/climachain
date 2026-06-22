@@ -5,7 +5,7 @@ export type { DataQuality }
 // ---- Registry ----
 
 export type PowerSource = "grid_reliable" | "grid_intermittent" | "solar" | "generator" | "none"
-export type ColdChainEquip = "sdd" | "ilr" | "gas_fridge" | "none" // solar direct-drive, ice-lined refrigerator
+export type ColdChainEquip = "sdd" | "ilr" | "gas_fridge" | "none" // solar direct drive, ice lined refrigerator
 export type ColdChainStatus = "functional" | "intermittent" | "non_functional" | "unknown"
 export type OutreachReliance = "fixed" | "mixed" | "outreach_heavy"
 export type AccessTier = "ok" | "road_only" | "checkpoint" | "severe"

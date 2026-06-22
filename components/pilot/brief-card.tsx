@@ -27,7 +27,7 @@ export function BriefCard({ brief }: { brief: OperationalBrief }) {
       </div>
 
       {brief.confidence !== "live" ? (
-        <p className="mt-4 text-xs text-muted-foreground">Confidence: {brief.confidence} — based on seeded / forecast inputs.</p>
+        <p className="mt-4 text-xs text-muted-foreground">Confidence: {brief.confidence} – based on seeded / forecast inputs.</p>
       ) : null}
     </div>
   )
