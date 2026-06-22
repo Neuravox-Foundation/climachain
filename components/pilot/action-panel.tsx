@@ -43,7 +43,7 @@ export function ActionPanel({ initial }: { initial: ActionRecord }) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
-        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Action status</span>
+        <span className="label-tech-sm">Action status</span>
         <StatusBadge status={status} />
       </div>
       <div className="text-sm">
@@ -51,35 +51,41 @@ export function ActionPanel({ initial }: { initial: ActionRecord }) {
         {initial.category}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <label className="space-y-1 text-sm">
-          <span className="text-muted-foreground">Status</span>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <label className="space-y-1.5">
+          <span className="label-tech-sm">Status</span>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as ActionStatus)}
-            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+            className="focus-ring w-full rounded-md border border-input bg-surface-container-lowest px-3 py-2 text-sm"
           >
             {STATUSES.map((s) => (
               <option key={s.value} value={s.value}>{s.label}</option>
             ))}
           </select>
         </label>
-        <label className="space-y-1 text-sm">
-          <span className="text-muted-foreground">Assigned role</span>
+        <label className="space-y-1.5">
+          <span className="label-tech-sm">Assigned role</span>
           <input
             value={assignedRole}
             onChange={(e) => setAssignedRole(e.target.value)}
-            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+            className="focus-ring w-full rounded-md border border-input bg-surface-container-lowest px-3 py-2 text-sm"
           />
         </label>
       </div>
 
-      <label className="space-y-1 text-sm">
-        <span className="text-muted-foreground">Notes</span>
-        <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} placeholder="Field notes, decisions taken…" />
+      <label className="space-y-1.5">
+        <span className="label-tech-sm">Notes</span>
+        <Textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          rows={2}
+          placeholder="Field notes, decisions taken…"
+          className="bg-surface-container-lowest"
+        />
       </label>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3">
         <span className="text-xs text-muted-foreground">
           {lastReviewed ? `Last reviewed ${new Date(lastReviewed).toLocaleString()}` : "Not yet reviewed"}
         </span>

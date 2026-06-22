@@ -1,35 +1,44 @@
 import Link from "next/link"
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table"
 import { RiskBadge } from "./risk-badge"
 import type { FacilityRow } from "@/lib/pilot/data"
 
 export function FacilityTable({ rows, showLga = true }: { rows: FacilityRow[]; showLga?: boolean }) {
+  if (!rows.length) {
+    return <p className="px-4 py-8 text-center text-sm text-muted-foreground">No facilities to show.</p>
+  }
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Facility</TableHead>
-          {showLga ? <TableHead>LGA</TableHead> : null}
-          <TableHead>Risk</TableHead>
-          <TableHead>Top driver</TableHead>
-          <TableHead className="text-right">Confidence</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows.map((r) => (
-          <TableRow key={r.id}>
-            <TableCell>
-              <Link href={`/pilot/facility/${r.id}`} className="font-medium text-secondary hover:underline">
-                {r.name}
-              </Link>
-            </TableCell>
-            {showLga ? <TableCell className="text-muted-foreground">{r.lgaName}</TableCell> : null}
-            <TableCell><RiskBadge band={r.band} score={r.score} /></TableCell>
-            <TableCell className="text-sm text-muted-foreground">{r.topDriver}</TableCell>
-            <TableCell className="text-right text-xs text-muted-foreground">{r.confidence}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="w-full overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-outline-variant/30 text-left">
+            <th className="label-tech-sm px-4 py-3 font-normal">Facility</th>
+            {showLga ? <th className="label-tech-sm px-4 py-3 font-normal">LGA</th> : null}
+            <th className="label-tech-sm px-4 py-3 font-normal">Risk</th>
+            <th className="label-tech-sm px-4 py-3 font-normal">Top driver</th>
+            <th className="label-tech-sm px-4 py-3 text-right font-normal">Confidence</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr
+              key={r.id}
+              className="border-b border-outline-variant/15 transition-colors last:border-0 hover:bg-surface-container/50"
+            >
+              <td className="px-4 py-3">
+                <Link href={`/pilot/facility/${r.id}`} className="font-medium text-primary hover:underline">
+                  {r.name}
+                </Link>
+              </td>
+              {showLga ? <td className="px-4 py-3 text-muted-foreground">{r.lgaName}</td> : null}
+              <td className="px-4 py-3"><RiskBadge band={r.band} score={r.score} /></td>
+              <td className="px-4 py-3 text-muted-foreground">{r.topDriver}</td>
+              <td className="px-4 py-3 text-right font-numeric text-xs uppercase tracking-wide text-muted-foreground">
+                {r.confidence}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }

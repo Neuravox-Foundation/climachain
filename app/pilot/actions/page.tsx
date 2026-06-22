@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { RiskBadge } from "@/components/pilot/risk-badge"
 import { StatusBadge } from "@/components/pilot/status-badge"
 import { ActionPanel } from "@/components/pilot/action-panel"
@@ -19,32 +18,37 @@ export default async function ActionsPage() {
   )
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold text-primary">Action queue</h1>
-        <p className="text-sm text-muted-foreground">{items.length} high/severe facilities, most urgent first. Manage the response, not just the risk.</p>
-        <p className="mt-1 text-xs text-muted-foreground">
-          Severe facilities lead. <span className="font-medium text-amber-700">Needs review</span> = not yet actioned this week.
+    <div className="space-y-10">
+      <section>
+        <p className="label-tech">Response management</p>
+        <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight text-foreground md:text-[3rem] md:leading-[1.05]">
+          Action queue
+        </h1>
+        <p className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
+          {items.length} high and severe facilities, most urgent first. Move from viewing risk to managing the response.
+          <span className="text-foreground"> Needs review</span> means not yet actioned this week.
         </p>
-      </div>
+      </section>
 
-      <div className="space-y-4">
+      <section className="space-y-px bg-outline-variant/20">
         {items.map(({ row, action }) => (
-          <Card key={row.id}>
-            <CardHeader className="flex flex-row items-start justify-between space-y-0">
+          <div key={row.id} className="bg-surface-container-low p-6 sm:p-8">
+            <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <CardTitle className="text-base">{row.name}</CardTitle>
-                <CardDescription>{row.lgaName} · {row.topDriver}</CardDescription>
+                <h2 className="font-display text-lg font-semibold tracking-tight text-foreground">{row.name}</h2>
+                <p className="mt-1 text-sm text-muted-foreground">{row.lgaName} · {row.topDriver}</p>
               </div>
-              <div className="flex flex-col items-end gap-1.5">
+              <div className="flex flex-col items-end gap-2">
                 <RiskBadge band={row.band} score={row.score} />
                 <StatusBadge status={action.status} />
               </div>
-            </CardHeader>
-            <CardContent><ActionPanel initial={action} /></CardContent>
-          </Card>
+            </div>
+            <div className="mt-6 border-t border-outline-variant/20 pt-6">
+              <ActionPanel initial={action} />
+            </div>
+          </div>
         ))}
-      </div>
+      </section>
     </div>
   )
 }
