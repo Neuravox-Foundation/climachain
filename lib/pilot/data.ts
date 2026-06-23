@@ -175,6 +175,7 @@ export function briefForLga(code: string): OperationalBrief | undefined {
   const theme = LGA_THEME[code]
   if (theme) {
     brief.action = theme.action
+    brief.headline = theme.headline
     brief.text = `${theme.headline} ${brief.text}`
   }
   return brief

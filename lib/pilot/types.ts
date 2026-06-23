@@ -79,6 +79,7 @@ export interface IcriResult {
 
 export interface OperationalBrief {
   scope: { kind: "facility" | "lga"; id: string; name: string }
+  headline?: string // plain-language one-liner (LGA theme); optional
   atRisk: string
   where: string
   why: string[]

@@ -41,19 +41,13 @@ export default async function FacilityPage({ params }: { params: Promise<{ id: s
         </div>
       </section>
 
-      {/* Why flagged – prominent tonal tile */}
+      {/* Why flagged – one-line headline; the brief below carries the detail */}
       <section className="border-l-2 border-primary bg-surface-container-low p-6 sm:p-8">
         <p className="label-tech-sm">Why flagged</p>
         <p className="mt-2 text-pretty text-lg leading-relaxed text-foreground">
           <span className="font-semibold text-primary">Flagged {BAND_LABEL[icri.band]}</span>
           {brief && brief.why.length ? <> – driven mainly by {brief.why.slice(0, 2).join(" and ")}.</> : "."}
         </p>
-        {brief ? (
-          <p className="mt-3 text-base text-muted-foreground">
-            <span className="font-medium text-foreground">Suggested action this week: </span>
-            {brief.action}
-          </p>
-        ) : null}
       </section>
 
       {/* ICRI breakdown + drivers */}

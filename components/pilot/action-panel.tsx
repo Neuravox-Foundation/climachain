@@ -14,7 +14,16 @@ const STATUSES: { value: ActionStatus; label: string }[] = [
   { value: "action_completed", label: "Action completed" },
 ]
 
+function recommendedSteps(category: string): string[] {
+  return category
+    .split(/;\s*/)
+    .map((s) => s.replace(/\.$/, "").trim())
+    .filter(Boolean)
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+}
+
 export function ActionPanel({ initial }: { initial: ActionRecord }) {
+  const steps = recommendedSteps(initial.category)
   const [status, setStatus] = useState<ActionStatus>(initial.status)
   const [notes, setNotes] = useState(initial.notes)
   const [assignedRole, setAssignedRole] = useState(initial.assignedRole)
@@ -46,9 +55,18 @@ export function ActionPanel({ initial }: { initial: ActionRecord }) {
         <span className="label-tech-sm">Action status</span>
         <StatusBadge status={status} />
       </div>
-      <div className="text-sm">
-        <span className="text-muted-foreground">Recommended: </span>
-        {initial.category}
+      <div>
+        <p className="label-tech-sm">Recommended steps</p>
+        <ol className="mt-2 space-y-1.5">
+          {steps.map((s, i) => (
+            <li key={i} className="flex items-start gap-2.5 text-sm text-foreground">
+              <span className="font-numeric mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-surface-container-highest text-xs font-semibold">
+                {i + 1}
+              </span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ol>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
