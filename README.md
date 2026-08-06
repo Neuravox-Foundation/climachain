@@ -5,7 +5,7 @@ CO₂ emissions and vegetation (NDVI) signals paired with policy briefs that are
 **computed deterministically from the loaded data**, then optionally refined by
 DeepSeek for tone.
 
-A [Neuravox Foundation](https://github.com/Neuravox-Foundation) platform.
+A Neuravox Ltd platform.
 
 ## Stack
 
@@ -97,4 +97,4 @@ the country level. Replace with bespoke RCP scenarios when needed.
 
 ## License
 
-Apache-2.0 (Neuravox Foundation, 2026).
+Apache-2.0 — Neuravox Ltd, 2026.
